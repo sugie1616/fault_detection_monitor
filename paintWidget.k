@@ -82,7 +82,7 @@ class PaintWidget {
 		taskButton.signalConnect("pressed", delegate(this, taskButtonPressed));
 		taskButton.setAutoRaise(true);
 
-		if (taskType == "Process"){
+		if (taskType == "Event"){
 			taskButton.setIcon(eventIcon);
 		}
 		if (taskType == "Task"){

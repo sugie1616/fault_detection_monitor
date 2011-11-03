@@ -1,4 +1,4 @@
-(Process)  (Diagnosis)           (in)   (0) (0)
+(Event)  (Diagnosis)           (in)   (0) (0)
 (Gateway)  (XOR)                 (in)   (1) (0)
 (Task)     (Appache Log Check)   (in)   (2) (0)
 (Task)     (Appache Log Check)   (out)  (3) (0)
@@ -17,4 +17,4 @@
 (Task)     (Factional Analysis)  (in)   (4) (3)
 (Task)     (Factional Analysis)  (out)  (5) (3)
 (Gateway)  (XOR)                 (out)  (6) (0)
-(Process)  (Diagnosis)           (out)  (7) (0)
+(Event)  (Diagnosis)           (out)  (7) (0)
