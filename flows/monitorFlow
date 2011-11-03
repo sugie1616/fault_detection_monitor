@@ -1,5 +1,5 @@
 (Process) (Monitor)                  (in)  (0) (0)
-(Gateway) (XOR)                      (in)  (4) (0)
+(Gateway) (XOR)                      (in)  (1) (0)
 (Task)    (Watch Network BW)         (in)  (2) (0)
 (Task)    (Watch Network BW)         (out) (3) (0)
 (Task)    (Anomaly Detection)        (in)  (4) (0)
