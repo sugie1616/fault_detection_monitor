@@ -17,7 +17,7 @@ class Controller {
 	}
 
 	String getLog(){
-	
+		return "";
 	}
 
 	void pressedTask(){
