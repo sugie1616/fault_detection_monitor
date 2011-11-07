@@ -1,5 +1,5 @@
 include "task.k"
-using konoha.posix.*;
+//using konoha.posix.*;
 
 class Model {
 
@@ -9,8 +9,8 @@ class Model {
 		map = flow.split($/ +/);
 		task.type = map[0];
 		task.name = map[1];
-		task.x = (int)map[2];
-		task.y = (int)map[3];
+		task.x    = (int)map[2];
+		task.y    = (int)map[3];
 
 		return task;
 	}
@@ -46,11 +46,12 @@ class Model {
 //	TaskList taskList = new TaskList();
 //	print "read flow file = ../resource/flows/monitorFlow";
 //	taskList = model.setTaskList("../resource/flows/monitorFlow");
-//	print taskList;
+//	//print taskList;
 //
 //	print "read log file = ../log/sampleLog";
 //	InputStream ins = new InputStream("../log/sampleLog");
 //	Task flashTask = new Task();
+//
 //	String log;
 //	foreach (String log in ins){
 //		flashTask = taskList.find(model.parseLog(log).name);

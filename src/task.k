@@ -1,6 +1,7 @@
+
 class Task {
-	int x,y;
-	String type,name,state;
+	int x, y, id;
+	String type, name, state;
 
 	String getSourceCode(){
 		InputStream ins = new InputStream("../resource/src/" + name + ".k");
@@ -13,19 +14,21 @@ class Task {
 }
 
 class TaskList {
-	Task[] taskList = [];
+	Task[] list;
+	TaskList() {
+		list = [];
+	}
 
 	void add(Task task){
-		taskList.add(task);
-		print "added task = " + task;
+		list.add(task);
+		//print "added task = " + task;
 	}
 
 	Task find(String taskname){
 		int i = 0;
-		while (taskList[i] != null){
-			if (taskList[i].name == taskname){
-				return taskList[i];
-				break;
+		while (list[i] != null){
+			if (list[i].name == taskname){
+				return list[i];
 			}
 			i++;
 		}
@@ -41,6 +44,11 @@ class TaskList {
 //	task.name = "test";
 //
 //	taskList.add(task);
+//
+//	tt = new TaskList();
+//	foreach(Task t in tt.list) {
+//		print t.type;
+//	}
 //	print "this task's source code = " + task.getSourceCode();
 //	print "found task = " + taskList.find("test");
 //}
