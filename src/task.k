@@ -32,15 +32,15 @@ class TaskList {
 	}
 }
 
-int main(){
-	Task task = new Task();
-	TaskList taskList = new TaskList();
-	task.x = 1;
-	task.y = 1;
-	task.type = "Event";
-	task.name = "test";
-
-	taskList.add(task);
-	print "this task's source code = " + task.getSourceCode();
-	print "found task = " + taskList.find("test");
-}
+//int main(){
+//	Task task = new Task();
+//	TaskList taskList = new TaskList();
+//	task.x = 1;
+//	task.y = 1;
+//	task.type = "Event";
+//	task.name = "test";
+//
+//	taskList.add(task);
+//	print "this task's source code = " + task.getSourceCode();
+//	print "found task = " + taskList.find("test");
+//}
