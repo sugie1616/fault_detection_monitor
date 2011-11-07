@@ -1,10 +1,11 @@
 include "model.k"
-//include "view.k"
+include "viewer.k"
 
 class Controller {
 
 	void run(){
 		Model model = new Model();
+		Viewer v = new Viewer();
 		TaskList monitorTaskList = new TaskList();
 		TaskList diagnosisTaskList = new TaskList();
 		TaskList recoverTaskList = new TaskList();
@@ -12,14 +13,15 @@ class Controller {
 		monitorTaskList = model.setTaskList("../resource/flows/monitorFlow");
 		diagnosisTaskList = model.setTaskList("../resource/flows/diagnosisFlow");
 		recoverTaskList = model.setTaskList("../resource/flows/recoverFlow");
-		print monitorTaskList;
+		//print monitorTaskList;
+		v.parseFlow(monitorTaskList);
 	}
 
-	String getLog(){
-	
+	String getLog() {
+		return "";
 	}
 
-	void pressedTask(){
+	void pressedTask() {
 	
 	}
 }
