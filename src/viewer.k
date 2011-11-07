@@ -6,7 +6,6 @@
 using konoha.qt4.*;
 
 include "logViewer.k";
-include "task.k";
 
 class Viewer
 {
@@ -215,6 +214,7 @@ class Viewer
 	}
 }
 
+/*
 void main()
 {
 	Task event = new Task();
@@ -244,3 +244,4 @@ void main()
 	v = new Viewer();
 	v.parseFlow(taskList);
 }
+*/
