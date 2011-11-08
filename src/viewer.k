@@ -8,10 +8,10 @@ using konoha.posix.*;
 
 include "logViewer.k";
 
-EVENT_RADIUS = 30;
+EVENT_RADIUS  = 30;
 GATEWAY_WIDTH = 30;
-TASK_WIDTH   = 140;
-TASK_HEIGHT  = 70;
+TASK_WIDTH    = 140;
+TASK_HEIGHT   = 70;
 
 class Viewer
 {
@@ -33,19 +33,15 @@ class Viewer
 		int y = 5;
 		int block_x = senario_x / x;
 		int block_y = view_y / y;
-		QRectF r_pos = new QRectF();
 		foreach (t in list.list) {
 			if (t.type == "Event") {
-				r_pos.setRect(t.x * block_x + block_x / 2 - EVENT_RADIUS / 2, 
-						t.y * block_y + block_y / 2 - EVENT_RADIUS / 2, 
+				EventItem item = new EventItem (t.x * block_x + block_x / 2 - EVENT_RADIUS / 2,
+						t.y * block_y + block_y / 2 - EVENT_RADIUS / 2,
 						EVENT_RADIUS, EVENT_RADIUS);
-				QGraphicsEllipseItem e = new QGraphicsEllipseItem();
-				e.setRect(r_pos);
-				scene.addItem(e);
-				//taskmap.set(t.name, e);
+				scene.addItem(item.ellip);
 			}
 			else if (t.type == "Task") {
-				TaskItem item = new TaskItem(t.x * block_x + block_x / 2 - TASK_WIDTH / 2,
+				TaskItem item = new TaskItem (t.x * block_x + block_x / 2 - TASK_WIDTH / 2,
 						t.y * block_y + block_y / 2 - TASK_HEIGHT / 2,
 						TASK_WIDTH, TASK_HEIGHT);
 				scene.addItem(item.rect);
@@ -53,7 +49,7 @@ class Viewer
 				print taskmap;
 			}
 			else if (t.type == "Gateway") {
-				GateWayItem item = new GateWayItem(t.x * block_x + block_x / 2 - GATEWAY_WIDTH / 2,
+				GateWayItem item = new GateWayItem (t.x * block_x + block_x / 2 - GATEWAY_WIDTH / 2,
 						t.y * block_y + block_y / 2 - GATEWAY_WIDTH / 2,
 						GATEWAY_WIDTH, GATEWAY_WIDTH);
 				scene.addItem(item.rect);
@@ -83,16 +79,23 @@ class Viewer
 	
 	void visualizeFlow(TaskList list) {
 		scene = new QGraphicsScene();
+		w = new QWidget();
+		QSize size = new QSize();
+		size.setWidth(view_x);
+		size.setHeight(view_y);
+		w.resize(size);
+		w.setWindowOpacity(0.07);
 		rect = new QRectF();
 		rect.setRect(0, 0, view_x, view_y);
 	
 		scene.setSceneRect(rect);
-		b = new QBrush();
-		b.setStyle(1);
-		c = new QColor();
-		c.setRgb(38, 61, 51, 100);
-		b.setColor(c);
-		scene.setBackgroundBrush(b);
+		scene.addWidget(w);
+		//b = new QBrush();
+		//b.setStyle(1);
+		//c = new QColor();
+		//c.setRgb(38, 61, 51, 100);
+		//b.setColor(c);
+		//scene.setBackgroundBrush(b);
 		this.initScene(list);
 		view = new QGraphicsView();
 		view.setScene(scene);
