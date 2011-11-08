@@ -55,7 +55,7 @@ class Model {
 		return task;
 	}
 
-	TaskList setTaskList(String filename){
+	TaskList getTaskList(String filename){
 		TaskList taskList = new TaskList();
 		InputStream ins = new InputStream(filename);
 		String flow;
