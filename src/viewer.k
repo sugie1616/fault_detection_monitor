@@ -43,10 +43,11 @@ class Viewer
 				scene.addItem(item.ellip);
 			}
 			else if (t.type == "Task") {
-				TaskItem item = new TaskItem (t.x * block_x + block_x / 2 - TASK_WIDTH / 2,
+				TaskItem item = new TaskItem (t.name, t.x * block_x + block_x / 2 - TASK_WIDTH / 2,
 						t.y * block_y + block_y / 2 - TASK_HEIGHT / 2,
 						TASK_WIDTH, TASK_HEIGHT);
 				scene.addItem(item.rect);
+				scene.addItem(item.text);
 				taskmap.set(t.name, item);
 				//print taskmap;
 			}
