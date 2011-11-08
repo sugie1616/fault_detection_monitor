@@ -17,18 +17,43 @@ class Model {
 
 	Task parseLog(String log){
 		Task task = new Task();
-		String[] map;
+		int secTime;
+		String[] map, otherMap, appMap;
+		String other, taskListName, taskName;
 		map = log.split($/ +/);
-		task.name = map[0];
+		task.timestamp = map[0] + map[1] + map[2];
+		secTime = (int)map[2].split($/:/)[0] * 3600 + (int)map[2].split($/:/)[1] * 60 + (int)map[2].split($/:/);
+		print task.timestamp;
+		print secTime;
+		task.hostName = map[3];
+		print task.hostName;
+		task.pid = map[4];
+		print task.pid;
+		task.hashNumber = map[5];
+		print task.hashNumber;
+		task.applicationName = map[6];
+		print task.applicationName;
+		otherMap = map[7].split($/"/);
+		print otherMap;
+		int i = 0;
+		appMap = task.applicationName.split($/_/);
+		print appMap;
+		if ( appMap[0] == "actor:new"){
+			taskListName = otherMap[3].split($/_/)[1];
+			print taskListName;
+				task.name = task.name + otherMap[3].split($/_/)[2] + "_";
+				task.name = task.name + otherMap[3].split($/_/)[3];
+		}
+		else if ( appMap[0] == "d-task" || appMap[0] == "d-script") {
+			taskListName = appMap[1];
+				task.name = task.name + appMap[2] + "_";
+				task.name = task.name + appMap[3];
+		}
+		
+		print task;
 
 		return task;
 	}
-
-//	String parseSampleLog(String log){
-//		String[] map;
-//		map = log.split($/ +/);
-//	
-//	}
 
 	TaskList setTaskList(String filename){
 		TaskList taskList = new TaskList();
@@ -41,6 +66,7 @@ class Model {
 	}
 }
 
+<<<<<<< Updated upstream
 //int main(){
 //	Model model = new Model();
 //	TaskList taskList = new TaskList();
@@ -59,3 +85,23 @@ class Model {
 //		System.sleep(1);
 //	}
 //}
+=======
+int main(){
+	Model model = new Model();
+	TaskList taskList = new TaskList();
+	print "read flow file = ../resource/flows/monitorFlow";
+	taskList = model.setTaskList("../resource/flows/monitorFlow");
+	//print taskList;
+
+	print "read log file = ../log/sampleLog2";
+	InputStream ins = new InputStream("../log/sampleLog2");
+	Task flashTask = new Task();
+	String log;
+	foreach (String log in ins){
+		//flashTask = taskList.find(model.parseLog(log).name);
+		//print "flash task = " + flashTask;
+		flashTask = model.parseLog(log);
+		System.sleep(1);
+	}
+}
+>>>>>>> Stashed changes
