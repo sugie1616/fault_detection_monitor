@@ -14,7 +14,6 @@ class Controller {
 	TaskList diagnosisTaskList;
 	TaskList recoverTaskList;
 	
-	
 	Controller() {
 		model = new Model();
 		viewer = new Viewer();
@@ -29,7 +28,7 @@ class Controller {
 		diagnosisTaskList = model.getTaskList("../resource/flows/diagnosisFlow");
 		recoverTaskList = model.getTaskList("../resource/flows/recoverFlow");
 		viewer.visualizeFlow(monitorTaskList);
-		viewer.visualizeFlow(diagnosisTaskList);
+		//viewer.visualizeFlow(diagnosisTaskList);
 		//viewer.visualizeFlow(recoverTaskList);
 	}
 	
@@ -60,3 +59,11 @@ QApplication app = new QApplication();
 Controller ctl = new Controller();
 ctl.run();
 app.exec();
+
+//int main()
+//{
+//	QApplication app = new QApplication();
+//	Controller ctl = new Controller();
+//	ctl.run();
+//	app.exec();
+//}
