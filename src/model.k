@@ -1,5 +1,3 @@
-//include "controller.k"
-//include "view.k"
 include "task.k"
 using konoha.posix.*;
 
@@ -43,20 +41,20 @@ class Model {
 	}
 }
 
-int main(){
-	Model model = new Model();
-	TaskList taskList = new TaskList();
-	print "read flow file = ../resource/flows/monitorFlow";
-	taskList = model.setTaskList("../resource/flows/monitorFlow");
-	print taskList;
-
-	print "read log file = ../log/sampleLog";
-	InputStream ins = new InputStream("../log/sampleLog");
-	Task flashTask = new Task();
-	String log;
-	foreach (String log in ins){
-		flashTask = taskList.find(model.parseLog(log).name);
-		print "flash task = " + flashTask;
-		System.sleep(1);
-	}
-}
+//int main(){
+//	Model model = new Model();
+//	TaskList taskList = new TaskList();
+//	print "read flow file = ../resource/flows/monitorFlow";
+//	taskList = model.setTaskList("../resource/flows/monitorFlow");
+//	print taskList;
+//
+//	print "read log file = ../log/sampleLog";
+//	InputStream ins = new InputStream("../log/sampleLog");
+//	Task flashTask = new Task();
+//	String log;
+//	foreach (String log in ins){
+//		flashTask = taskList.find(model.parseLog(log).name);
+//		print "flash task = " + flashTask;
+//		System.sleep(1);
+//	}
+//}
