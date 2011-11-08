@@ -1,14 +1,9 @@
 
 class Task {
-<<<<<<< Updated upstream
-	int x, y, id;
-	String type, name, state;
-=======
 	int x,y;
 	String type,name,state;
 	String timeStamp, hostName, applicationName, pid, hashNumber;
 	String[] map = [];
->>>>>>> Stashed changes
 
 	String getSourceCode(){
 		InputStream ins = new InputStream("../resource/src/" + name + ".k");
@@ -21,7 +16,6 @@ class Task {
 }
 
 class TaskList {
-<<<<<<< Updated upstream
 	Task[] list;
 	TaskList() {
 		list = [];
@@ -29,20 +23,9 @@ class TaskList {
 
 	void add(Task task){
 		list.add(task);
-=======
-	Task[] taskList;
-
-	TaskList(){
-		taskList = [];
 	}
 
 	int maxX,maxY;
-
-	void add(Task task){
-		taskList.add(task);
->>>>>>> Stashed changes
-		//print "added task = " + task;
-	}
 
 	Task find(String taskname){
 		int i = 0;

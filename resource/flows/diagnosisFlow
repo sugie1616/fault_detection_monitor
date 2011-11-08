@@ -1,19 +1,19 @@
-Event Start 0 1
+Event Start 0 1 id:1
 SequenceFlow -- 1 1
-Gateway AND 2 1
+Gateway AND 2 1 id:2
 SequenceFlow -- 3 0
 SequenceFlow -- 3 1
 SequenceFlow -- 3 2
-Task checkAppacheLog 4 0
-Task checkDBLog 4 1
-Task watchSystemLog 4 2
+Task checkAppacheLog 4 0 id:3
+Task checkDBLog 4 1 id:4
+Task watchSystemLog 4 2 id:5
 SequenceFlow -- 5 0
 SequenceFlow -- 5 1
 SequenceFlow -- 5 2
-Gateway AND 6 1
+Gateway AND 6 1 id:6
 SequenceFlow -- 7 1
-Task confirmClrralation 8 1
+Task confirmClrralation 8 1 id:7
 SequenceFlow -- 9 1
-Task decideWayOfRecovery 10 1
+Task decideWayOfRecovery 10 1 id:8
 SequenceFlow -- 11 1
-Event End 12 1
+Event End 12 1 id:9
