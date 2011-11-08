@@ -7,7 +7,6 @@ using konoha.qt4.*;
 using konoha.posix.*;
 
 include "logViewer.k";
-include "task.k";
 
 EVENT_RADIUS  = 30;
 GATEWAY_WIDTH = 30;
@@ -47,6 +46,7 @@ class Viewer
 						TASK_WIDTH, TASK_HEIGHT);
 				scene.addItem(item.rect);
 				taskmap.set(t.name, item);
+				print taskmap;
 			}
 			else if (t.type == "Gateway") {
 				GateWayItem item = new GateWayItem (t.x * block_x + block_x / 2 - GATEWAY_WIDTH / 2,
@@ -64,9 +64,12 @@ class Viewer
 			}
 		}
 	}
-	void flash(Task task, int option) {
+	void flash(Task task) {
+		if (taskmap.getSize() == 0) {
+			return;
+		}
 		TaskItem item = taskmap.get(task.name);
-		if (option == 0) {
+		if (task.status == TASK_WORKING) {
 			item.working = true;
 		}
 		else {
@@ -74,7 +77,7 @@ class Viewer
 		}
 	}
 	
-	void parseFlow(TaskList list) {
+	void visualizeFlow(TaskList list) {
 		scene = new QGraphicsScene();
 		w = new QWidget();
 		QSize size = new QSize();
@@ -100,39 +103,39 @@ class Viewer
 	}
 }
 
-void main()
-{
-	app = new QApplication();
-	Task event = new Task();
-	TaskList taskList = new TaskList();
-
-	event.x = 1;
-	event.y = 1;
-	event.type = "Event";
-	event.name = "start";
-
-	Task task1 = new Task();
-	task1.x = 4;
-	task1.y = 1;
-	task1.type = "Task";
-	task1.name = "task1";
-
-	Task task2 = new Task();
-	task2.x = 7;
-	task2.y = 1;
-	task2.type = "Task";
-	task2.name = "task2";
-
-	taskList.add(event);
-	taskList.add(task1);
-	taskList.add(task2);
-
-
-	v = new Viewer();
-	v.parseFlow(taskList);
-	System.sleep(3);
-	v.flash(task1, 0);
-	System.sleep(3);
-	v.flash(task2, 1);
-	app.exec();
-}
+//void main()
+//{
+//	app = new QApplication();
+//	Task event = new Task();
+//	TaskList taskList = new TaskList();
+//
+//	event.x = 1;
+//	event.y = 1;
+//	event.type = "Event";
+//	event.name = "start";
+//
+//	Task task1 = new Task();
+//	task1.x = 4;
+//	task1.y = 1;
+//	task1.type = "Task";
+//	task1.name = "task1";
+//
+//	Task task2 = new Task();
+//	task2.x = 7;
+//	task2.y = 1;
+//	task2.type = "Task";
+//	task2.name = "task2";
+//
+//	taskList.add(event);
+//	taskList.add(task1);
+//	taskList.add(task2);
+//
+//
+//	v = new Viewer();
+//	v.parseFlow(taskList);
+//	System.sleep(3);
+//	v.flash(task1, 0);
+//	System.sleep(3);
+//	v.flash(task2, 1);
+//	app.exec();
+//}

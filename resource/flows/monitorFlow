@@ -1,23 +1,24 @@
-Event Start 0 2
-SequenceFlow -- 1 3
-Gateway XOR 2 2
-SequenceFlow -- 3 0
-SequenceFlow -- 3 1
-SequenceFlow -- 3 2
-SequenceFlow -- 3 3
-SequenceFlow -- 3 4
-Task monitorNetworkBW 4 0
-Task monitorResponseTime 4 1
-Task monitorAccessCount 4 2
-Task monitorLoadOfSystem 4 3
-Task userReport 4 4
-SequenceFlow -- 5 0
-SequenceFlow -- 5 1
-SequenceFlow -- 5 2
-SequenceFlow -- 5 3
-SequenceFlow -- 5 4
-Event End 6 0
-Event End 6 1
-Event End 6 2
-Event End 6 3
-Event End 6 4
+Setting 3 5
+Event Start 0 2 id:1
+SequenceFlow 1-2
+Gateway XOR 1 2 id:2
+SequenceFlow 2-3
+SequenceFlow 2-4
+SequenceFlow 2-5
+SequenceFlow 2-6
+SequenceFlow 2-7
+Task monitor_network_bw 2 0 id:3
+Task monitor_response_time 2 1 id:4
+Task web_access 2 2 id:5
+Task monitor_load_of_system 2 3 id:6
+Task user_report 2 4 id:7
+SequenceFlow 3-8
+SequenceFlow 4-9
+SequenceFlow 5-10
+SequenceFlow 6-11
+SequenceFlow 7-12
+Event End 3 0 id:8
+Event End 3 1 id:9
+Event End 3 2 id:10
+Event End 3 3 id:11
+Event End 3 4 id:12
