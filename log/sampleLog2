@@ -1,0 +1,2 @@
+Nov 7 18:37:00 diag konoha[29242]: BXT93ZWC9+139 d-task_monitor_web_access {"error:web_access:nps":0,"web_access:nps":1,"isAlive":1,"sequence:number":24,"interval:sec":1}
+Nov 7 18:37:00 diag konoha[29242]: BXT93ZWC9+139 actor:new {"name":"d-task_diagnosis_check_appache_log","host":"192.168.0.10","port":50020}

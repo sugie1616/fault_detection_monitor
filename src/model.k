@@ -77,6 +77,8 @@ class Model {
 		foreach (String flow in ins){
 			taskList.add(parseFlow(flow));
 		}
+		//taskList.maxX = taskList[0].x;
+		//taskList.maxY = taskList[0].y;
 		return taskList;
 	}
 }

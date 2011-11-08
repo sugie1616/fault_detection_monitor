@@ -26,7 +26,7 @@ class EventItem
 		c.setRgb(255, 255, 255, 100);
 		b.setColor(c);
 		ellip.setBrush(b);
-		c.setRgb(100, 100, 100, 255);
+		c.setRgb(40, 40, 40, 255);
 		b.setColor(c);
 		QPen p = new QPen();
 		p.setBrush(b);
@@ -86,7 +86,7 @@ class TaskItem
 		c.setRgb(255, 255, 255, 100);
 		b.setColor(c);
 		rect.setBrush(b);
-		c.setRgb(100, 100, 100, 255);
+		c.setRgb(40, 40, 40, 255);
 		b.setColor(c);
 		QPen p = new QPen();
 		p.setBrush(b);

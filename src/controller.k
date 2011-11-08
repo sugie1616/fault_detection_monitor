@@ -14,7 +14,6 @@ class Controller {
 	TaskList diagnosisTaskList;
 	TaskList recoverTaskList;
 	
-	
 	Controller() {
 		model = new Model();
 		viewer = new Viewer();
@@ -30,7 +29,7 @@ class Controller {
 		recoverTaskList = model.getTaskList("../resource/flows/recoverFlow");
 		viewer.visualizeFlow(monitorTaskList);
 		viewer.visualizeFlow(diagnosisTaskList);
-		//viewer.visualizeFlow(recoverTaskList);
+		viewer.visualizeFlow(recoverTaskList);
 	}
 	
 	void run() {
@@ -42,7 +41,7 @@ class Controller {
 			if (task.status != TASK_STOP) {
 				//System.sleep(5);
 				print "flash task = " + task;
-				viewer.flash(task);
+				//viewer.flash(task);
 			}
 		}
 	}

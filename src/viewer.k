@@ -30,8 +30,10 @@ class Viewer
 
 	void initScene(TaskList list)
 	{
-		int x = 7;
+		int x = 3;
 		int y = 5;
+		//int x = list.maxX;
+		//int y = list.maxY;
 		int block_x = senario_x / x;
 		int block_y = view_y / y;
 		foreach (t in list.list) {
@@ -47,7 +49,7 @@ class Viewer
 						TASK_WIDTH, TASK_HEIGHT);
 				scene.addItem(item.rect);
 				taskmap.set(t.name, item);
-				print taskmap;
+				//print taskmap;
 			}
 			else if (t.type == "Gateway") {
 				GateWayItem item = new GateWayItem (t.x * block_x + block_x / 2 - GATEWAY_WIDTH / 2,
@@ -91,15 +93,17 @@ class Viewer
 	
 		scene.setSceneRect(rect);
 		scene.addWidget(w);
-		//b = new QBrush();
-		//b.setStyle(1);
-		//c = new QColor();
-		//c.setRgb(38, 61, 51, 100);
-		//b.setColor(c);
-		//scene.setBackgroundBrush(b);
+		b = new QBrush();
+		b.setStyle(1);
+		c = new QColor();
+		c.setRgb(0, 0, 0, 255);
+		//c.setRgb(38, 61, 51, 255);
+		b.setColor(c);
+		scene.setBackgroundBrush(b);
 		this.initScene(list);
 		view = new QGraphicsView();
 		view.setScene(scene);
+		view.setWindowOpacity(0.9);
 		view.show();
 	}
 }
