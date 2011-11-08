@@ -47,6 +47,7 @@ class Viewer
 						TASK_WIDTH, TASK_HEIGHT);
 				scene.addItem(item.rect);
 				taskmap.set(t.name, item);
+				print taskmap;
 			}
 			else if (t.type == "Gateway") {
 				GateWayItem item = new GateWayItem (t.x * block_x + block_x / 2 - GATEWAY_WIDTH / 2,
@@ -66,7 +67,7 @@ class Viewer
 	}
 	void flash(Task task) {
 		if (taskmap.getSize() == 0) {
-			return ;
+			return;
 		}
 		TaskItem item = taskmap.get(task.name);
 		if (task.status == TASK_WORKING) {
