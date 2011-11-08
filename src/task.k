@@ -1,13 +1,21 @@
+TASK_STOP = 0;
+TASK_WORKING = 1;
+TASK_ERROR = 2;
 
 class Task {
-	int x,y;
-	String type,name,state;
+	int x, y, id, status;
+	String type, name, listName;
+	int incoming, outgoing;
 	String timeStamp, hostName, applicationName, pid, hashNumber;
 	String[] map = [];
+	
+	Task(){
+		
+		}
 
 	String getSourceCode(){
 		InputStream ins = new InputStream("../resource/src/" + name + ".k");
-		String str,src;
+		String str, src;
 		while ((str = ins.readline()) != null){
 			src = src + str + "\n";
 		}
@@ -28,13 +36,16 @@ class TaskList {
 	int maxX,maxY;
 
 	Task find(String taskname){
-		int i = 0;
+		int i = 0, j = 0;
 		while (list[i] != null){
 			if (list[i].name == taskname){
+				//j = i;
 				return list[i];
 			}
 			i++;
 		}
+		return null;
+		//return list[j];
 	}
 }
 

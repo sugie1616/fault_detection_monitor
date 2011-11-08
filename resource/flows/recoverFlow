@@ -1,21 +1,22 @@
-Event Start 0 0
-Event Start 0 1
-Event Start 0 2
-SequenceFlow -- 1 0
-SequenceFlow -- 1 1
-SequenceFlow -- 1 2
-Task newProgramFault 2 0
-Task incidentalFaultAndMemoryLeak 2 1
-Task configulationMiss 2 2
-SequenceFlow -- 3 0
-SequenceFlow -- 3 1
-SequenceFlow -- 3 2
-Task unInstall 4 0
-Task reStart 4 1
-Task reConfigulation 4 2
-SequenceFlow -- 5 0
-SequenceFlow -- 5 1
-SequenceFlow -- 5 2
-Event End 6 0
-Event End 6 1
-Event End 6 2
+Setting 5 2
+Event Start 0 0 id:1
+Event Start 0 1 id:2
+Event Start 0 2 id:3
+SequenceFlow 1-4
+SequenceFlow 1-5
+SequenceFlow 1-6
+Task new_program_fault 1 0 id:4
+Task incidental_fault_and_memory_leak 1 1 id:5
+Task configulation_miss 1 2 id:6
+SequenceFlow 4-7
+SequenceFlow 5-8
+SequenceFlow 6-9
+Task un_install 4 0 id:7
+Task re_start 4 1 id:8
+Task re_configulation 4 2 id:9
+SequenceFlow 7-10
+SequenceFlow 8-11
+SequenceFlow 9-12
+Event End 5 0 id:10
+Event End 5 1 id:11
+Event End 5 2 id:12
