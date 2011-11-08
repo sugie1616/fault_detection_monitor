@@ -32,30 +32,30 @@ class Model {
 //	
 //	}
 
-	TaskTable setTaskTable(String filename){
-		TaskTable taskTable = new TaskTable();
+	TaskList setTaskList(String filename){
+		TaskList taskList = new TaskList();
 		InputStream ins = new InputStream(filename);
 		String flow;
 		foreach (String flow in ins){
-			taskTable.add(parseFlow(flow));
+			taskList.add(parseFlow(flow));
 		}
-		return taskTable;
+		return taskList;
 	}
 }
 
 int main(){
 	Model model = new Model();
-	TaskTable taskTable = new TaskTable();
+	TaskList taskList = new TaskList();
 	print "read flow file = ../resource/flows/monitorFlow";
-	taskTable = model.setTaskTable("../resource/flows/monitorFlow");
-	print taskTable;
+	taskList = model.setTaskList("../resource/flows/monitorFlow");
+	print taskList;
 
 	print "read log file = ../log/sampleLog";
 	InputStream ins = new InputStream("../log/sampleLog");
 	Task flashTask = new Task();
 	String log;
 	foreach (String log in ins){
-		flashTask = taskTable.find(model.parseLog(log).name);
+		flashTask = taskList.find(model.parseLog(log).name);
 		print "flash task = " + flashTask;
 		System.sleep(1);
 	}

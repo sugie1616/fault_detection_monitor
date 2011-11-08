@@ -12,19 +12,19 @@ class Task {
 	}
 }
 
-class TaskTable {
-	Task[] taskTable = [];
+class TaskList {
+	Task[] taskList = [];
 
 	void add(Task task){
-		taskTable.add(task);
+		taskList.add(task);
 		print "added task = " + task;
 	}
 
 	Task find(String taskname){
 		int i = 0;
-		while (taskTable[i] != null){
-			if (taskTable[i].name == taskname){
-				return taskTable[i];
+		while (taskList[i] != null){
+			if (taskList[i].name == taskname){
+				return taskList[i];
 				break;
 			}
 			i++;
@@ -34,13 +34,13 @@ class TaskTable {
 
 int main(){
 	Task task = new Task();
-	TaskTable taskTable = new TaskTable();
+	TaskList taskList = new TaskList();
 	task.x = 1;
 	task.y = 1;
 	task.type = "Event";
 	task.name = "test";
 
-	taskTable.add(task);
+	taskList.add(task);
 	print "this task's source code = " + task.getSourceCode();
-	print "found task = " + taskTable.find("test");
+	print "found task = " + taskList.find("test");
 }
