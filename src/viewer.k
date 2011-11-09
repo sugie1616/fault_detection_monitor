@@ -39,7 +39,7 @@ class Viewer
 			if (t.type == "Event") {
 				EventItem item = new EventItem (t.x * block_x + block_x / 2 - EVENT_RADIUS / 2,
 						t.y * block_y + block_y / 2 - EVENT_RADIUS / 2,
-						EVENT_RADIUS, EVENT_RADIUS);
+						EVENT_RADIUS, EVENT_RADIUS); 
 				scene.addItem(item.ellip);
 			}
 			else if (t.type == "Task") {
@@ -62,22 +62,22 @@ class Viewer
 				Task inTask, outTask;
 				inTask = list.findFromID(t.incoming);
 				outTask = list.findFromID(t.outgoing);
-				print inTask, outTask;
+				//print inTask, outTask;
 				switch (inTask.type) {
 					case "Event":
 						x1 = (inTask.x * block_x + block_x / 2 - EVENT_RADIUS / 2) + EVENT_RADIUS;
 						y1 = inTask.y * block_y + block_y / 2;
-						print "task type = Event x1,y1 =" + x1,y1;
+						//print "task type = Event x1,y1 =" + x1,y1;
 						break;
 					case "Task":
 						x1 = (inTask.x * block_x + block_x / 2 - TASK_WIDTH / 2) + TASK_WIDTH;
 						y1 = inTask.y * block_y + block_y / 2;
-						print "task type = Task x1,y1 =" + x1,y1;
+						//print "task type = Task x1,y1 =" + x1,y1;
 						break;
 					case "Gateway":
 						x1 = (inTask.x * block_x + block_x / 2 - GATEWAY_WIDTH / 2) + GATEWAY_WIDTH;
 						y1 = inTask.y * block_y + block_y / 2;
-						print "task type = Gateway x1,y1 =" + x1,y1;
+						//print "task type = Gateway x1,y1 =" + x1,y1;
 					default:
 						break;
 				}
@@ -85,17 +85,17 @@ class Viewer
 					case "Event":
 						x2 = outTask.x * block_x + block_x / 2 - EVENT_RADIUS / 2;
 						y2 = outTask.y * block_y + block_y / 2;
-						print "task type = Event x2,y2 =" + x2,y2;
+						//print "task type = Event x2,y2 =" + x2,y2;
 						break;
 					case "Task":
 						x2 = outTask.x * block_x + block_x / 2 - TASK_WIDTH / 2;
 						y2 = outTask.y * block_y + block_y / 2;
-						print "task type = Task x2,y2 =" + x2,y2;
+						//print "task type = Task x2,y2 =" + x2,y2;
 						break;
 					case "Gateway":
 						x2 = outTask.x * block_x + block_x / 2 - GATEWAY_WIDTH / 2;
 						y2 = outTask.y * block_y + block_y / 2;
-						print "task type = Gateway x2,y2 =" + x2,y2;
+						//print "task type = Gateway x2,y2 =" + x2,y2;
 					default:
 						break;
 				}
