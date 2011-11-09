@@ -3,8 +3,8 @@ using konoha.math.*;
 
 EVENT_RADIUS  = 50;
 GATEWAY_WIDTH = 30;
-TASK_WIDTH    = 140;
-TASK_HEIGHT   = 70;
+TASK_WIDTH    = 100;
+TASK_HEIGHT   = 50;
 
 class EventItem 
 {
