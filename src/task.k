@@ -36,16 +36,25 @@ class TaskList {
 	int maxX,maxY;
 
 	Task find(String taskname){
-		int i = 0, j = 0;
+		int i = 0;
 		while (list[i] != null){
 			if (list[i].name == taskname){
-				//j = i;
 				return list[i];
 			}
 			i++;
 		}
 		return null;
-		//return list[j];
+	}
+	
+	Task findFromID(int id){
+		int i = 0;
+		while (list[i] != null){
+			if (list[i].id == id){
+				return list[i];
+			}
+			i++;
+		}
+		return null;
 	}
 }
 
