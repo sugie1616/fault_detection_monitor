@@ -74,6 +74,9 @@ class Model {
 	TaskList getTaskList(String filename){
 		TaskList taskList = new TaskList();
 		InputStream ins = new InputStream(filename);
+		path = filename.split("/");
+		print path[-1]
+		taskList.name = path[-1];
 		String flow;
 		foreach (String flow in ins){
 			taskList.add(parseFlow(flow));

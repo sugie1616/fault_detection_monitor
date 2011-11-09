@@ -11,7 +11,7 @@ Task watch_system_log 2 2 id:5
 SequenceFlow 3-6
 SequenceFlow 4-6
 SequenceFlow 5-6
-Gateway AND 3 1 id:6
+Gateway AND1 3 1 id:6
 SequenceFlow 6-7
 Task confirm_corralation 4 1 id:7
 SequenceFlow 7-8

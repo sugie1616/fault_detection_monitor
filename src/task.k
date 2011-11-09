@@ -2,13 +2,14 @@ TASK_STOP = 0;
 TASK_WORKING = 1;
 TASK_ERROR = 2;
 
+
 class Task {
 	int x, y, id, status;
 	String type, name, listName;
 	int incoming, outgoing;
 	String timeStamp, hostName, applicationName, pid, hashNumber;
 	String[] map = [];
-	
+
 	Task(){
 		
 		}
@@ -25,6 +26,9 @@ class Task {
 
 class TaskList {
 	Task[] list;
+	int maxX,maxY;
+	String name;
+
 	TaskList() {
 		list = [];
 	}
@@ -32,8 +36,6 @@ class TaskList {
 	void add(Task task){
 		list.add(task);
 	}
-
-	int maxX,maxY;
 
 	Task find(String taskname){
 		int i = 0;

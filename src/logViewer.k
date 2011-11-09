@@ -1,6 +1,11 @@
 
 using konoha.qt4.*;
 
+EVENT_RADIUS  = 30;
+GATEWAY_WIDTH = 30;
+TASK_WIDTH    = 140;
+TASK_HEIGHT   = 70;
+
 class EventItem 
 {
 	QGraphicsEllipseItem ellip;
@@ -140,7 +145,7 @@ class TaskItem
 		return str;
 	}
 	
-	int getAdjustedX(String text, QFont f, int x, int w){
+	void getAdjustedX(String text, QFont f, int x, int w){
 //		String[] map = [];
 //		map = text.split("\n");
 //		int n;
@@ -307,7 +312,7 @@ class SequenceFlowItem
 	QColor c;
 	boolean rightUp;
 	SequenceFlowItem(float x1, float y1, float x2, float y2) {
-		print "ccc";
+		//print "ccc";
 		line = new QGraphicsLineItem();
 		linef = new QLineF();
 		p = new QPen();
@@ -318,7 +323,7 @@ class SequenceFlowItem
 		b.setColor(c);
 		p.setBrush(b);
 		line.setPen(p);
-		print "ddd";
+		//print "ddd";
 		line = createSequenceFlow(x1, y1, x2, y2);
 	}
 	
@@ -328,3 +333,117 @@ class SequenceFlowItem
 		return line;
 	}
 }
+
+class TaskGroup
+{
+	float x, y, w, h;
+	float block_x, block_y;
+	String name;
+	TaskList list;
+	Map itemMap;
+	TaskGroup(TaskList list, float x, float y, float w, float h) {
+		this.x = x;
+		this.y = y;
+		this.w = w;
+		this.h = h;
+		this.name = list.name;
+		this.list = list;
+		itemMap = {};
+	}
+	void layoutHint(int x, int y) {
+		this.block_x = w / x;
+		this.block_y = h / y;
+		print w, h
+		print x, y
+	}
+	EventItem addEventItem(QGraphicsScene s, Task t) {
+		item = new EventItem(this.x + t.x * block_x + block_x / 2 - EVENT_RADIUS / 2, this.y + t.y * block_y + block_y / 2 - EVENT_RADIUS / 2,
+				EVENT_RADIUS, EVENT_RADIUS);
+		print "event";
+		print "this: ", this.x, this.y;
+		print "blk: ", block_x, block_y;
+		print "args: ",  t.x, t.y
+		s.addItem(item.ellip);
+		itemMap.set((String)t.id, item);
+		return item;
+	}
+	TaskItem addTaskItem(QGraphicsScene s, Task t) {
+		item = new TaskItem(name, this.x + t.x * block_x + block_x / 2 - TASK_WIDTH / 2,
+				this.y + t.y * block_y + block_y / 2 - TASK_HEIGHT / 2, TASK_WIDTH, TASK_HEIGHT);
+		print item.name;
+		print "this: ", this.x, this.y;
+		print "args: ", t.x, t.y
+		print "blk: ", block_x, block_y;
+		print "item: ", item.pos.getX(), item.pos.getY();
+		s.addItem(item.rect);
+		s.addItem(item.text);
+		itemMap.set((String)t.id, item);
+		return item;
+	}
+	GateWayItem addGateWayItem(QGraphicsScene s, Task t) {
+		item = new GateWayItem(this.x + t.x * block_x + block_x / 2 - GATEWAY_WIDTH / 2,
+				this.y + t.y * block_y + block_y / 2 - GATEWAY_WIDTH / 2, GATEWAY_WIDTH, GATEWAY_WIDTH);
+		print "gateway";
+		print "this: ", this.x, this.y;
+		print "args: ",  x, y
+		s.addItem(item.rect);
+		itemMap.set((String)t.id, item);
+		return item;
+	}
+
+	SequenceFlowItem addSequenceFlowItem(QGrapihcsScene s, TaskList list, Task t) {
+		int x1, y1, x2, y2;
+		Task inTask, outTask;
+		inTask = list.findFromID(t.incoming);
+		outTask = list.findFromID(t.outgoing);
+		switch (inTask.type) {
+			case "Event":
+				EventItem inTaskItem = itemMap.get((String)t.incoming);
+				x1 = inTaskItem.pos.getX() + EVENT_RADIUS;
+				y1 = inTaskItem.pos.getY() + EVENT_RADIUS / 2;
+				print "[in] Event x1,y1 =" + x1,y1;
+				break;
+			case "Task":
+				TaskItem inTaskItem = itemMap.get((String)t.incoming);
+				x1 = inTaskItem.pos.getX() + TASK_WIDTH;
+				y1 = inTaskItem.pos.getY() + TASK_WIDTH / 4;
+				print "[in] ", inTask.name, " x,y =", inTaskItem.pos.getX(),inTaskItem.pos.getY();
+				print "[in] ", inTask.name, " x1,y1 =", x1,y1;
+				break;
+			case "Gateway":
+				GateWayItem inTaskItem = itemMap.get((String)t.incoming);
+				x1 = inTaskItem.pos.getX() + GATEWAY_WIDTH;
+				y1 = inTaskItem.pos.getY() + GATEWAY_WIDTH / 2;
+				print "[in] Gateway x1,y1 =" + x1,y1;
+			default:
+				break;
+		}
+		switch (outTask.type) {
+			case "Event":
+				EventItem outTaskItem = itemMap.get((String)t.outgoing);
+				x2 = outTaskItem.pos.getX();
+				y2 = outTaskItem.pos.getY() + EVENT_RADIUS / 2;
+				print "[out] task type = Event x2,y2 =", x2, y2;
+				break;
+			case "Task":
+				print outTask.name;
+				print itemMap.get((String)t.outgoing);
+				TaskItem outTaskItem = itemMap.get((String)t.outgoing);
+				x2 = outTaskItem.pos.getX();
+				y2 = outTaskItem.pos.getY() + TASK_WIDTH / 4;
+				print "[out] ", inTask.name, " x1,y1 =", x2, y2;
+				break;
+			case "Gateway":
+				GateWayItem outTaskItem = itemMap.get((String)t.outgoing);
+				x2 = outTaskItem.pos.getX();
+				y2 = outTaskItem.pos.getY() + GATEWAY_WIDTH / 2;
+				print "[out] task type = gataway x2,y2 =", x2, y2;
+			default:
+				break;
+		}
+		SequenceFlowItem item = new SequenceFlowItem(x1, y1, x2, y2);
+		s.addItem(item.line);
+		return item;
+	}
+}
+

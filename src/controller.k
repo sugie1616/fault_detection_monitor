@@ -24,23 +24,25 @@ class Controller {
 	}
 
 	void init(){
+		viewer.start();
 		monitorTaskList = model.getTaskList("../resource/flows/monitorFlow");
 		diagnosisTaskList = model.getTaskList("../resource/flows/diagnosisFlow");
 		recoverTaskList = model.getTaskList("../resource/flows/recoverFlow");
 		viewer.visualizeFlow(monitorTaskList);
 		viewer.visualizeFlow(diagnosisTaskList);
 		viewer.visualizeFlow(recoverTaskList);
+		viewer.end();
 	}
 	
 	void run() {
 		Task task;
 		InputStream ins = new InputStream(logfile);
 		foreach(String str in ins) {
-			print str;
+			//print str;
 			task = model.parseLog(str);
 			if (task.status != TASK_STOP) {
 				//System.sleep(5);
-				print "flash task = " + task;
+				//print "flash task = " + task;
 				viewer.flash(task);
 			}
 		}
@@ -55,15 +57,15 @@ class Controller {
 	}
 }
 
-QApplication app = new QApplication();
-Controller ctl = new Controller();
-ctl.run();
-app.exec();
+//QApplication app = new QApplication();
+//Controller ctl = new Controller();
+//ctl.run();
+//app.exec();
 
-//int main()
-//{
-//	QApplication app = new QApplication();
-//	Controller ctl = new Controller();
-//	ctl.run();
-//	app.exec();
-//}
+int main()
+{
+	QApplication app = new QApplication();
+	Controller ctl = new Controller();
+	ctl.run();
+	app.exec();
+}
