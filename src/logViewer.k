@@ -127,7 +127,7 @@ class TaskItem
 		str = map[0];
 		int mapSize = map.getSize();
 		for (int i = 0; i < mapSize - 1; i ++) {
-			print tmp.getSize(),map[i + 1].getSize(),f.getPointSize();
+			//print tmp.getSize(),map[i + 1].getSize(),f.getPointSize();
 			if ((tmp.getSize() + map[i + 1].getSize()) * f.getPointSize() < w) {
 				str = str + "_" + map[i + 1];
 				tmp = tmp + "_" + map[i + 1];
@@ -141,21 +141,24 @@ class TaskItem
 	}
 	
 	int getAdjustedX(String text, QFont f, int x, int w){
-	//	String[] map = [];
-	//	map = text.split("\n");
-	//	int n;
-	//	n = map.getSize();
-	//	for (int i = 0; i < n; i ++){
-	//		
-	//	}
+//		String[] map = [];
+//		map = text.split("\n");
+//		int n;
+//		String str = "";
+//		n = map.getSize();
+//		for (int i = 0; i < n; i ++){
+//			if (str < map[i]) {
+//				str = map[i];
+//			}
+//		}
 	}
 	
 	int getAdjustedY(String text, QFont f, int y, int h){
 		String[] map = [];
 		map = text.split("\n");
 		int mapSize = map.getSize();
-		int textHeight = mapSize * f.getPointSize() * 1.5;
-		print mapSize, textHeight;
+		int textHeight = mapSize * f.getPointSize() * 1.6;
+		//print mapSize, textHeight;
 		if (h > textHeight) {
 			return y + (h - textHeight)/2;
 		}
@@ -286,5 +289,42 @@ class GateWayItem
 		QGraphicsLineItem ret = new QGraphicsLineItem();
 		ret.setLine(line);
 		return ret;
+	}
+}
+
+class SequenceFlowItem
+{
+	//QGraphicsTextItem text;
+	QGraphicsLineItem line;
+	QGraphicsPathItem path;
+	String name;
+	QLineF linef
+	QRectF pos;
+	QRectF realPos;
+	QTimer t;
+	QPen p;
+	QBrush b;
+	QColor c;
+	boolean rightUp;
+	SequenceFlowItem(float x1, float y1, float x2, float y2) {
+		print "ccc";
+		line = new QGraphicsLineItem();
+		linef = new QLineF();
+		p = new QPen();
+		b = new QBrush();
+		c = new QColor();
+		b.setStyle(1);
+		c.setRgb(255, 255, 255, 100);
+		b.setColor(c);
+		p.setBrush(b);
+		line.setPen(p);
+		print "ddd";
+		line = createSequenceFlow(x1, y1, x2, y2);
+	}
+	
+	QGraphicsLineItem createSequenceFlow(float x1, float y1, float x2, float y2){
+		linef.setLine(x1, y1, x2, y2);
+		line.setLine(linef);
+		return line;
 	}
 }

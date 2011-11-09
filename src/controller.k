@@ -41,7 +41,7 @@ class Controller {
 			if (task.status != TASK_STOP) {
 				//System.sleep(5);
 				print "flash task = " + task;
-				//viewer.flash(task);
+				viewer.flash(task);
 			}
 		}
 	}

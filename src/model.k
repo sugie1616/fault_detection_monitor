@@ -7,11 +7,12 @@ class Model {
 		Task task = new Task();
 		String[] map;
 		map = flow.split($/ +/);
-		if (map[0] == "SequenceFlow"){
+		task.type = map[0];
+		if (task.type == "SequenceFlow"){
 			task.incoming = (int)map[1].split($/-/)[0];
 			task.outgoing = (int)map[1].split($/-/)[1];
 			}
-		else if (map[0] == "Setting"){
+		else if (task.type == "Setting"){
 			task.x = (int)map[1];
 			task.y = (int)map[2];
 			}
