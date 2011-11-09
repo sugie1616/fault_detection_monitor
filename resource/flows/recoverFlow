@@ -11,9 +11,9 @@ Task configulation_miss 1 2 id:6
 SequenceFlow 4-7
 SequenceFlow 5-8
 SequenceFlow 6-9
-Task un_install 2 0 id:7
-Task re_start 2 1 id:8
-Task re_configulation 2 2 id:9
+Task uninstall 2 0 id:7
+Task restart 2 1 id:8
+Task reconfigulation 2 2 id:9
 SequenceFlow 7-10
 SequenceFlow 8-11
 SequenceFlow 9-12
