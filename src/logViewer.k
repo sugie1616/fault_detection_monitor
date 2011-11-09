@@ -1,4 +1,3 @@
-
 using konoha.qt4.*;
 
 EVENT_RADIUS  = 30;
@@ -89,13 +88,13 @@ class TaskItem
 		f = new QFont();
 		name = n;
 		f.setFamily("Phetsarath");
-		f.setPointSize(14);
+		f.setPixelSize(15);
 		pos.setRect(x, y, w, h);
 		//text.setText(name);
 		String taskName;
 		taskName = getAdjustedText(name, f, w);
 		text.setText(taskName);
-		point.setX(x + 2);
+		point.setX(getAdjustedX(taskName, f, x, w));
 		point.setY(getAdjustedY(taskName, f, y, h));
 		rect.setRect(pos);
 		text.setPos(point);
@@ -118,51 +117,89 @@ class TaskItem
 		t = new Timer(null);
 		rect.addEvent("mouse-press-event", delegate(this, mEvent));
 		t.addEvent("timer-event", delegate(this, tEvent));
-		t.start(300);
+		t.start(100);
 		working = false;
 		lightUp = false;
 		error = false;
 	}
 	
-	String getAdjustedText(String text, QFont f, int w){
-		String tmp,str;
+	String getAdjustedText(String text, QFont f, float w){
+		String tmp, str, str2;
 		String[] map = [];
+		String[] map2 = [];
 		map = text.split("_");
 		tmp = map[0];
 		str = map[0];
-		int mapSize = map.getSize();
-		for (int i = 0; i < mapSize - 1; i ++) {
-			//print tmp.getSize(),map[i + 1].getSize(),f.getPointSize();
-			if ((tmp.getSize() + map[i + 1].getSize()) * f.getPointSize() < w) {
-				str = str + "_" + map[i + 1];
-				tmp = tmp + "_" + map[i + 1];
+		int i, j, k, maxSize, mapSize, mapSize2, tmpSize;
+		mapSize = map.getSize();
+		//--- adjust number of letter in one line ---//
+		for (i = 1; i < mapSize; i ++) {
+			if ((tmp.getSize() + map[i].getSize()) * f.getPixelSize() < w * 1.10) {
+				if (tmp != ""){
+				tmp = tmp + " " + map[i];
+				str = str + " " + map[i];
+				}
+				else {
+					tmp = tmp + map[i];
+					str = str + map[i];
+				}
 			}
 			else {
-				tmp = map[i + 1];
-				str = str + "\n" + map[i + 1];
+				tmp = tmp + map[i];
+				if (maxSize < tmp.getSize()){
+					maxSize = tmp.getSize();
+				}
+				tmp = "";
+				str = str + " " +  map[i] + "\n";
 			}
 		}
-		return str;
+		map2 = str.split("\n");
+		print "part1 " + str, map2;
+		mapSize2 = map2.getSize();
+		for (i = 0; i < mapSize2; i ++) {
+			if (map2[i] == "") {
+				map2.remove(i);
+				mapSize2 = map2.getSize();
+			}
+		}
+		print "part2 " + str, map2;
+		for (i = 0; i < mapSize2; i ++) {
+			if ((tmpSize = map2[i].getSize()) < maxSize){
+				for (j = 0; j < (maxSize - tmpSize) / 2; j ++) {
+					map2[i] = " " + map2[i] + " ";
+				}
+			}
+			str2 = str2 + map2[i] + "\n";
+		}
+		print str2;
+		return str2;
 	}
 	
-	void getAdjustedX(String text, QFont f, int x, int w){
-//		String[] map = [];
-//		map = text.split("\n");
-//		int n;
-//		String str = "";
-//		n = map.getSize();
-//		for (int i = 0; i < n; i ++){
-//			if (str < map[i]) {
-//				str = map[i];
-//			}
-//		}
+	float getAdjustedX(String text, QFont f, float x, float w){
+		String[] map = [];
+		map = text.split("\n");
+		int n, textWidth;
+		String str = "";
+		n = map.getSize();
+		for (int i = 0; i < n; i ++){
+			if (str.getSize() < map[i].getSize) {
+				str = map[i];
+			}
+		}
+		textWidth = f.getPixelSize() * str.getSize() * 0.6;
+		if (w > textWidth) {
+			return x + (w - textWidth)/2;
+		}
+		else {
+			return x + 3;
+		}
 	}
 	
-	int getAdjustedY(String text, QFont f, int y, int h){
+	float getAdjustedY(String text, QFont f, float y, float h){
 		String[] map = [];
 		map = text.split("\n");
 		int mapSize = map.getSize();
-		int textHeight = mapSize * f.getPointSize() * 1.6;
+		int textHeight = mapSize * f.getPixelSize();
 		//print mapSize, textHeight;
 		if (h > textHeight) {
 			return y + (h - textHeight)/2;
@@ -312,7 +349,6 @@ class SequenceFlowItem
 	QColor c;
 	boolean rightUp;
 	SequenceFlowItem(float x1, float y1, float x2, float y2) {
-		//print "ccc";
 		line = new QGraphicsLineItem();
 		linef = new QLineF();
 		p = new QPen();
@@ -322,6 +358,7 @@ class SequenceFlowItem
 		c.setRgb(255, 255, 255, 100);
 		b.setColor(c);
 		p.setBrush(b);
+		p.setWidth(5);
 		line.setPen(p);
 		//print "ddd";
 		line = createSequenceFlow(x1, y1, x2, y2);
