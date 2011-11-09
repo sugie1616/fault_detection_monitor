@@ -8,143 +8,109 @@ using konoha.posix.*;
 
 include "logViewer.k";
 
-EVENT_RADIUS  = 30;
-GATEWAY_WIDTH = 30;
-TASK_WIDTH    = 140;
-TASK_HEIGHT   = 70;
-
 class Viewer
 {
 	QGraphicsScene scene;
-	int view_x;
-	int view_y;
+	QGraphicsView view;
+	int view_x, view_y;
+	int real_x, real_y;
 	int senario_x;
+	int last_x;
 	Map taskmap;
+	TaskGroup[] g;
 	Viewer() {
-		view_x = 1500;
+		real_x = 2800;
+		real_y = 800;
+		view_x = 2800;
 		view_y = 500;
 		senario_x = view_x / 3;
 		taskmap = {};
 	}
 
-	void initScene(TaskList list)
+	void start() {
+		scene = new QGraphicsScene();
+		rect = new QRectF();
+		rect.setRect(0, 0, real_x, real_y);
+	
+		scene.setSceneRect(rect);
+		b = new QBrush();
+		b.setStyle(1);
+		c = new QColor();
+		c.setRgb(0, 0, 0, 255);
+		//c.setRgb(18, 31, 21, 255);
+		b.setColor(c);
+		scene.setBackgroundBrush(b);
+	}
+
+	void end() {
+		view = new QGraphicsView();
+		view.setScene(scene);
+		view.setWindowOpacity(0.9);
+		view.show();
+	}
+
+	void visualizeFlow(TaskList list)
 	{
-		int x = 3;
-		int y = 5;
-		//int x = list.maxX;
-		//int y = list.maxY;
-		int block_x = senario_x / x;
-		int block_y = view_y / y;
+		int block_x;
+		int block_y;
+
+		TaskGroup grp;
+		TaskList flowlist = new TaskList();
+		if (list.name == "monitorFlow") {
+			grp = new TaskGroup(list, 0, 100, 500, view_y);
+		}
+		else if (list.name == "diagnosisFlow") {
+			grp = new TaskGroup(list, 600, 100, 1200, view_y);
+			senario_x = 1200;
+		}
+		else if (list.name == "recoverFlow") {
+			grp = new TaskGroup(list, 1900, 100, 700, view_y);
+			senario_x = 700;
+		}
+		this.g.add(grp);
 		foreach (t in list.list) {
+			if (t.type == "Setting") {
+				grp.layoutHint(t.x, t.y);
+				block_x = senario_x / t.x;
+				block_y = view_y / t.y;
+			}
 			if (t.type == "Event") {
-				EventItem item = new EventItem (t.x * block_x + block_x / 2 - EVENT_RADIUS / 2,
-						t.y * block_y + block_y / 2 - EVENT_RADIUS / 2,
-						EVENT_RADIUS, EVENT_RADIUS); 
-				scene.addItem(item.ellip);
+				grp.addEventItem(scene, t);
 			}
 			else if (t.type == "Task") {
-				TaskItem item = new TaskItem (t.name, t.x * block_x + block_x / 2 - TASK_WIDTH / 2,
-						t.y * block_y + block_y / 2 - TASK_HEIGHT / 2,
-						TASK_WIDTH, TASK_HEIGHT);
-				scene.addItem(item.rect);
-				scene.addItem(item.text);
+				item = grp.addTaskItem(scene, t);
 				taskmap.set(t.name, item);
-				//print taskmap;
+				print list.name, item.pos.getX();
 			}
 			else if (t.type == "Gateway") {
-				GateWayItem item = new GateWayItem (t.x * block_x + block_x / 2 - GATEWAY_WIDTH / 2,
-						t.y * block_y + block_y / 2 - GATEWAY_WIDTH / 2,
-						GATEWAY_WIDTH, GATEWAY_WIDTH);
-				scene.addItem(item.rect);
+				grp.addGateWayItem(scene, t);
 			}
 			else if (t.type == "SequenceFlow") {
-				int x1, y1, x2, y2;
-				Task inTask, outTask;
-				inTask = list.findFromID(t.incoming);
-				outTask = list.findFromID(t.outgoing);
-				//print inTask, outTask;
-				switch (inTask.type) {
-					case "Event":
-						x1 = (inTask.x * block_x + block_x / 2 - EVENT_RADIUS / 2) + EVENT_RADIUS;
-						y1 = inTask.y * block_y + block_y / 2;
-						//print "task type = Event x1,y1 =" + x1,y1;
-						break;
-					case "Task":
-						x1 = (inTask.x * block_x + block_x / 2 - TASK_WIDTH / 2) + TASK_WIDTH;
-						y1 = inTask.y * block_y + block_y / 2;
-						//print "task type = Task x1,y1 =" + x1,y1;
-						break;
-					case "Gateway":
-						x1 = (inTask.x * block_x + block_x / 2 - GATEWAY_WIDTH / 2) + GATEWAY_WIDTH;
-						y1 = inTask.y * block_y + block_y / 2;
-						//print "task type = Gateway x1,y1 =" + x1,y1;
-					default:
-						break;
-				}
-				switch (outTask.type) {
-					case "Event":
-						x2 = outTask.x * block_x + block_x / 2 - EVENT_RADIUS / 2;
-						y2 = outTask.y * block_y + block_y / 2;
-						//print "task type = Event x2,y2 =" + x2,y2;
-						break;
-					case "Task":
-						x2 = outTask.x * block_x + block_x / 2 - TASK_WIDTH / 2;
-						y2 = outTask.y * block_y + block_y / 2;
-						//print "task type = Task x2,y2 =" + x2,y2;
-						break;
-					case "Gateway":
-						x2 = outTask.x * block_x + block_x / 2 - GATEWAY_WIDTH / 2;
-						y2 = outTask.y * block_y + block_y / 2;
-						//print "task type = Gateway x2,y2 =" + x2,y2;
-					default:
-						break;
-				}
-				SequenceFlowItem item = new SequenceFlowItem(x1, y1, x2, y2);
-				scene.addItem(item.line);
+				flowlist.add(t);
 			}
-			else {
-			}
+		}
+		foreach (f in flowlist.list) {
+			grp.addSequenceFlowItem(scene, list, f);
 		}
 	}
 	void flash(Task task) {
 		if (taskmap.getSize() == 0) {
 			return;
 		}
-		TaskItem item = taskmap.get(task.name);
-		if (task.status == TASK_WORKING) {
-			item.working = true;
-		}
-		else {
-			item.error = true;
+		if (taskmap.get(task.name) != null) {
+			TaskItem item = taskmap.get(task.name);
+			if (task.status == TASK_WORKING) {
+				item.working = true;
+			}
+			else {
+				item.error = true;
+			}
 		}
 	}
 	
-	void visualizeFlow(TaskList list) {
-		scene = new QGraphicsScene();
-		w = new QWidget();
-		QSize size = new QSize();
-		size.setWidth(view_x);
-		size.setHeight(view_y);
-		w.resize(size);
-		w.setWindowOpacity(0.07);
-		rect = new QRectF();
-		rect.setRect(0, 0, view_x, view_y);
-	
-		scene.setSceneRect(rect);
-		scene.addWidget(w);
-		b = new QBrush();
-		b.setStyle(1);
-		c = new QColor();
-		c.setRgb(0, 0, 0, 255);
-		//c.setRgb(38, 61, 51, 255);
-		b.setColor(c);
-		scene.setBackgroundBrush(b);
-		this.initScene(list);
-		view = new QGraphicsView();
-		view.setScene(scene);
-		view.setWindowOpacity(0.9);
-		view.show();
-	}
+	//void visualizeFlow(TaskList list) {
+	//	this.initScene(list);
+	//}
 }
 
 //void main()
