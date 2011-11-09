@@ -64,22 +64,37 @@ class EventItem
 class TaskItem 
 {
 	QGraphicsRectItem rect;
-	QGraphicsTextItem text;
+	QGraphicsSimpleTextItem text;
 	String name;
 	QRectF pos;
+	QPointF point;
 	QTimer t;
 	QBrush b;
 	QColor c;
+	QFont f;
 	boolean lightUp;
 	boolean working;
 	boolean error;
-	TaskItem(float x, float y, float w, float h) {
+	int sw, sh;
+	TaskItem(String n, float x, float y, float w, float h) {
 		rect = new QGraphicsRectItem();
-		text = new QGraphicsTextItem();
+		text = new QGraphicsSimpleTextItem();
 		pos = new QRectF();
+		point = new QPointF();
+		f = new QFont();
+		name = n;
+		f.setFamily("Phetsarath");
+		f.setPointSize(14);
 		pos.setRect(x, y, w, h);
+		//text.setText(name);
+		String taskName;
+		taskName = getAdjustedText(name, f, w);
+		text.setText(taskName);
+		point.setX(x + 2);
+		point.setY(getAdjustedY(taskName, f, y, h));
 		rect.setRect(pos);
-		name = "";
+		text.setPos(point);
+		text.setFont(f);
 
 		b = new QBrush();
 		b.setStyle(1);
@@ -92,6 +107,7 @@ class TaskItem
 		QPen p = new QPen();
 		p.setBrush(b);
 		p.setWidth(3);
+		
 		rect.setPen(p);
 
 		t = new Timer(null);
@@ -102,7 +118,52 @@ class TaskItem
 		lightUp = false;
 		error = false;
 	}
-
+	
+	String getAdjustedText(String text, QFont f, int w){
+		String tmp,str;
+		String[] map = [];
+		map = text.split("_");
+		tmp = map[0];
+		str = map[0];
+		int mapSize = map.getSize();
+		for (int i = 0; i < mapSize - 1; i ++) {
+			print tmp.getSize(),map[i + 1].getSize(),f.getPointSize();
+			if ((tmp.getSize() + map[i + 1].getSize()) * f.getPointSize() < w) {
+				str = str + "_" + map[i + 1];
+				tmp = tmp + "_" + map[i + 1];
+			}
+			else {
+				tmp = map[i + 1];
+				str = str + "\n" + map[i + 1];
+			}
+		}
+		return str;
+	}
+	
+	int getAdjustedX(String text, QFont f, int x, int w){
+	//	String[] map = [];
+	//	map = text.split("\n");
+	//	int n;
+	//	n = map.getSize();
+	//	for (int i = 0; i < n; i ++){
+	//		
+	//	}
+	}
+	
+	int getAdjustedY(String text, QFont f, int y, int h){
+		String[] map = [];
+		map = text.split("\n");
+		int mapSize = map.getSize();
+		int textHeight = mapSize * f.getPointSize() * 1.5;
+		print mapSize, textHeight;
+		if (h > textHeight) {
+			return y + (h - textHeight)/2;
+		}
+		else {
+			return y;
+		}
+	}
+	
 	void mEvent(QGraphicsMouseEvent event) {
 		print "hi";
 	}
