@@ -181,7 +181,7 @@ class TaskItem
 				str = map[i];
 			}
 		}
-		textWidth = f.getPixelSize() * str.getSize() * 0.6;
+		textWidth = f.getPixelSize() * str.getSize() * 0.55;
 		if (w > textWidth) {
 			return x + (w - textWidth)/2;
 		}
