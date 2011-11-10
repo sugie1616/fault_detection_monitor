@@ -80,7 +80,7 @@ class Viewer
 			else if (t.type == "Task") {
 				item = grp.addTaskItem(scene, t);
 				taskmap.set(t.name, item);
-				print list.name, item.pos.getX();
+				//print list.name, item.rectPos.getX();
 			}
 			else if (t.type == "Gateway") {
 				grp.addGateWayItem(scene, t);
@@ -101,6 +101,11 @@ class Viewer
 			TaskItem item = taskmap.get(task.name);
 			if (task.status == TASK_WORKING) {
 				item.working = true;
+				item.circuitSpin = true;
+				item.switchSpinCircuitEvent();
+				if (task.status == TASK_WORKING){
+					item.displayStatus("Working");
+				}
 			}
 			else {
 				item.error = true;
