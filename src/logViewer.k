@@ -112,7 +112,7 @@ class TaskItem
 		QPen p = new QPen();
 		p.setBrush(b);
 		p.setWidth(3);
-		
+
 		rect.setPen(p);
 
 		t = new Timer(null);
@@ -123,7 +123,7 @@ class TaskItem
 		lightUp = false;
 		error = false;
 	}
-	
+
 	String getAdjustedText(String text, QFont f, float w){
 		String tmp, str, str2;
 		String[] map = [];
@@ -137,8 +137,8 @@ class TaskItem
 		for (i = 1; i < mapSize; i ++) {
 			if ((tmp.getSize() + map[i].getSize()) * f.getPixelSize() < w * 1.10) {
 				if (tmp != ""){
-				tmp = tmp + " " + map[i];
-				str = str + " " + map[i];
+					tmp = tmp + " " + map[i];
+					str = str + " " + map[i];
 				}
 				else {
 					tmp = tmp + map[i];
@@ -175,7 +175,7 @@ class TaskItem
 		print str2;
 		return str2;
 	}
-	
+
 	float getAdjustedX(String text, QFont f, float x, float w){
 		String[] map = [];
 		map = text.split("\n");
@@ -195,7 +195,7 @@ class TaskItem
 			return x + 3;
 		}
 	}
-	
+
 	float getAdjustedY(String text, QFont f, float y, float h){
 		String[] map = [];
 		map = text.split("\n");
@@ -209,7 +209,7 @@ class TaskItem
 			return y;
 		}
 	}
-	
+
 	void mEvent(QGraphicsMouseEvent event) {
 		print "hi";
 	}
@@ -341,18 +341,21 @@ class SequenceFlowItem
 {
 	//QGraphicsTextItem text;
 	QGraphicsLineItem line;
-	QGraphicsPathItem path;
+	QGraphicsPathItem pathItem;
+	QPainterPath path;
 	String name;
 	QLineF linef
-	QRectF pos;
+		QRectF pos;
 	QRectF realPos;
 	QTimer t;
 	QPen p;
 	QBrush b;
 	QColor c;
 	boolean rightUp;
-	SequenceFlowItem(float x1, float y1, float x2, float y2) {
+	SequenceFlowItem(String flowType, float x1, float y1, float x2, float y2) {
 		line = new QGraphicsLineItem();
+		pathItem = new QGraphicsPathItem();
+		path = new QPainterPath();
 		linef = new QLineF();
 		p = new QPen();
 		b = new QBrush();
@@ -363,16 +366,39 @@ class SequenceFlowItem
 		p.setBrush(b);
 		p.setWidth(5);
 		p.setCapStyle(1);
-		line.setPen(p);
-		line.setZValue(-1);
-		//print "ddd";
-		line = createSequenceFlow(x1, y1, x2, y2);
+
+		path = createSequenceFlowPath(flowType, x1, y1, x2, y2);
+		pathItem.setPen(p);
+		pathItem.setPath(path);
 	}
-	
-	QGraphicsLineItem createSequenceFlow(float x1, float y1, float x2, float y2){
-		linef.setLine(x1, y1, x2, y2);
-		line.setLine(linef);
-		return line;
+
+	QPainterPath createSequenceFlowPath(String flowType, float x1, float y1, float x2, float y2){
+		QPointF startPoint = new QPointF();
+		QPointF curvePoint = new QPointF();
+		QPointF endPoint = new QPointF();
+		if (flowType == "go"){
+			startPoint.setX(x1);
+			startPoint.setY(y1);
+			curvePoint.setX(x1);
+			curvePoint.setY(y2);
+			endPoint.setX(x2);
+			endPoint.setY(y2);
+			path.moveTo(startPoint);
+			path.lineTo(curvePoint);
+			path.lineTo(endPoint);
+		}
+		else {
+			startPoint.setX(x1);
+			startPoint.setY(y1);
+			curvePoint.setX(x2);
+			curvePoint.setY(y1);
+			endPoint.setX(x2);
+			endPoint.setY(y2);
+			path.moveTo(startPoint);
+			path.lineTo(curvePoint);
+			path.lineTo(endPoint);
+		}
+		return path
 	}
 }
 
@@ -395,8 +421,8 @@ class TaskGroup
 	void layoutHint(int x, int y) {
 		this.block_x = w / x;
 		this.block_y = h / y;
-		print w, h
-		print x, y
+		print w, h;
+		print x, y;
 	}
 	EventItem addEventItem(QGraphicsScene s, Task t) {
 		item = new EventItem(this.x + t.x * block_x + block_x / 2 - EVENT_RADIUS / 2, this.y + t.y * block_y + block_y / 2 - EVENT_RADIUS / 2,
@@ -404,7 +430,7 @@ class TaskGroup
 		print "event";
 		print "this: ", this.x, this.y;
 		print "blk: ", block_x, block_y;
-		print "args: ",  t.x, t.y
+		print "args: ",  t.x, t.y;
 		s.addItem(item.ellip);
 		itemMap.set((String)t.id, item);
 		return item;
@@ -414,7 +440,7 @@ class TaskGroup
 				this.y + t.y * block_y + block_y / 2 - TASK_HEIGHT / 2, TASK_WIDTH, TASK_HEIGHT);
 		print item.name;
 		print "this: ", this.x, this.y;
-		print "args: ", t.x, t.y
+		print "args: ", t.x, t.y;
 		print "blk: ", block_x, block_y;
 		print "item: ", item.pos.getX(), item.pos.getY();
 		s.addItem(item.rect);
@@ -427,7 +453,7 @@ class TaskGroup
 				this.y + t.y * block_y + block_y / 2 - GATEWAY_WIDTH / 2, GATEWAY_WIDTH, GATEWAY_WIDTH);
 		print "gateway";
 		print "this: ", this.x, this.y;
-		print "args: ",  x, y
+		print "args: ",  x, y;
 		s.addItem(item.rect);
 		itemMap.set((String)t.id, item);
 		return item;
@@ -435,6 +461,7 @@ class TaskGroup
 
 	SequenceFlowItem addSequenceFlowItem(QGrapihcsScene s, TaskList list, Task t) {
 		int x1, y1, x2, y2;
+		String flowType;
 		Task inTask, outTask;
 		inTask = list.findFromID(t.incoming);
 		outTask = list.findFromID(t.outgoing);
@@ -483,9 +510,16 @@ class TaskGroup
 			default:
 				break;
 		}
-		SequenceFlowItem item = new SequenceFlowItem(x1, y1, x2, y2);
-		s.addItem(item.line);
+		if (inTask.type == "Gateway" && outTask.type != "Gateway") {
+			flowType = "go";
+		}
+		else {
+			flowType = "come";
+		}
+
+		SequenceFlowItem item = new SequenceFlowItem(flowType, x1, y1, x2, y2);
+		//s.addItem(item.line);
+		s.addItem(item.pathItem);
 		return item;
 	}
 }
-
