@@ -19,10 +19,10 @@ class Viewer
 	Map taskmap;
 	TaskGroup[] g;
 	Viewer() {
-		real_x = 2800;
-		real_y = 800;
-		view_x = 2800;
-		view_y = 500;
+		real_x = 2000;
+		real_y = 700;
+		view_x = 2000;
+		view_y = 400;
 		senario_x = view_x / 3;
 		taskmap = {};
 	}
@@ -33,13 +33,33 @@ class Viewer
 		rect.setRect(0, 0, real_x, real_y);
 	
 		scene.setSceneRect(rect);
-		b = new QBrush();
-		b.setStyle(1);
-		c = new QColor();
-		c.setRgb(0, 0, 0, 255);
+		//b = new QBrush();
+		//b.setStyle(1);
+		//c = new QColor();
+		//c.setRgb(0, 0, 0, 255);
+		//b.setColor(c);
 		//c.setRgb(18, 31, 21, 255);
-		b.setColor(c);
-		scene.setBackgroundBrush(b);
+		//scene.setBackgroundBrush(b);
+
+		QLinearGradient grad = new QLinearGradient();
+		start = new QPointF();
+		start.setX(0);
+		start.setY(0);
+		end = new QPointF();
+		end.setX(0);
+		end.setY(real_y);
+		grad.setStart(start);
+		grad.setFinalStop(end);
+		print grad.getStart();
+		print grad.getFinalStop();
+		c1 = new QColor();
+		c1.setRgb(12, 114, 135, 195);
+		grad.setColorAt(1.0, c1);
+		c2 = new QColor();
+		c2.setRgb(0, 0, 0, 255);
+		grad.setColorAt(0.4, c2);
+		grad.setSpread(QGradient.PadSpread);
+		scene.setBackgroundGradientBrush(grad);
 	}
 
 	void end() {
@@ -60,12 +80,12 @@ class Viewer
 			grp = new TaskGroup(list, 0, 100, 500, view_y);
 		}
 		else if (list.name == "diagnosisFlow") {
-			grp = new TaskGroup(list, 600, 100, 1200, view_y);
-			senario_x = 1200;
+			grp = new TaskGroup(list, 450, 100, 650, view_y);
+			//senario_x = 1200;
 		}
 		else if (list.name == "recoverFlow") {
-			grp = new TaskGroup(list, 1900, 100, 700, view_y);
-			senario_x = 700;
+			grp = new TaskGroup(list, 1200, 100, 400, view_y);
+			//senario_x = 700;
 		}
 		this.g.add(grp);
 		foreach (t in list.list) {
