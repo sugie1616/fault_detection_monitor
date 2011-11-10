@@ -362,7 +362,9 @@ class SequenceFlowItem
 		b.setColor(c);
 		p.setBrush(b);
 		p.setWidth(5);
+		p.setCapStyle(1);
 		line.setPen(p);
+		line.setZValue(-1);
 		//print "ddd";
 		line = createSequenceFlow(x1, y1, x2, y2);
 	}
