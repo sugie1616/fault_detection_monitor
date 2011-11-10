@@ -1,4 +1,5 @@
 using konoha.qt4.*;
+using konoha.math.*;
 
 EVENT_RADIUS  = 30;
 GATEWAY_WIDTH = 30;
@@ -278,7 +279,9 @@ class GateWayItem
 		text = new QGraphicsTextItem();
 		pos = new QRectF();
 		realPos = new QRectF();
-		realPos.setRect(x + w / 2, y - h / 2, w, h);
+		x = x + w / Math.sqrt(2);
+		y = y - (((Math.sqrt(2) - 1) / 2) * w);
+		realPos.setRect(x, y, w, h);
 		pos.setRect(x, y, w, h);
 		rect.setRect(realPos);
 		QPointF p = new QPointF();
@@ -449,8 +452,8 @@ class TaskGroup
 				break;
 			case "Gateway":
 				GateWayItem inTaskItem = itemMap.get((String)t.incoming);
-				x1 = inTaskItem.pos.getX() + GATEWAY_WIDTH;
-				y1 = inTaskItem.pos.getY() + GATEWAY_WIDTH / 2;
+				x1 = inTaskItem.pos.getX() + GATEWAY_WIDTH / Math.sqrt(2);
+				y1 = inTaskItem.pos.getY() + GATEWAY_WIDTH / Math.sqrt(2);
 				print "[in] Gateway x1,y1 =" + x1,y1;
 			default:
 				break;
@@ -472,8 +475,8 @@ class TaskGroup
 				break;
 			case "Gateway":
 				GateWayItem outTaskItem = itemMap.get((String)t.outgoing);
-				x2 = outTaskItem.pos.getX();
-				y2 = outTaskItem.pos.getY() + GATEWAY_WIDTH / 2;
+				x2 = outTaskItem.pos.getX() - GATEWAY_WIDTH / Math.sqrt(2);
+				y2 = outTaskItem.pos.getY() + GATEWAY_WIDTH / Math.sqrt(2);
 				print "[out] task type = gataway x2,y2 =", x2, y2;
 			default:
 				break;
