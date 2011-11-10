@@ -1,7 +1,7 @@
 using konoha.qt4.*;
 using konoha.math.*;
 
-EVENT_RADIUS  = 30;
+EVENT_RADIUS  = 50;
 GATEWAY_WIDTH = 30;
 TASK_WIDTH    = 140;
 TASK_HEIGHT   = 70;
@@ -9,9 +9,11 @@ TASK_HEIGHT   = 70;
 class EventItem 
 {
 	QGraphicsEllipseItem ellip;
+	QGraphicsEllipseItem inEllip;
 	QGraphicsTextItem text;
 	String name;
 	QRectF pos;
+	QRectF inPos;
 	QTimer t;
 	QBrush b;
 	QColor c;
@@ -29,7 +31,7 @@ class EventItem
 		b = new QBrush();
 		b.setStyle(1);
 		c = new QColor();
-		c.setRgb(255, 255, 255, 100);
+		c.setRgb(130, 130, 130, 255);
 		b.setColor(c);
 		ellip.setBrush(b);
 		c.setRgb(40, 40, 40, 255);
@@ -294,9 +296,15 @@ class GateWayItem
 		b = new QBrush();
 		b.setStyle(1);
 		c = new QColor();
-		c.setRgb(255, 255, 255, 100);
+		c.setRgb(130, 130, 130, 255);
 		b.setColor(c);
 		rect.setBrush(b);
+		QPen p = new QPen();
+		c.setRgb(40, 40, 40, 255);
+		b.setColor(c);
+		p.setBrush(b);
+		p.setWidth(3);
+		rect.setPen(p);
 
 		//t = new Timer(null);
 		//rect.addEvent("mouse-press-event", clicked);
@@ -340,13 +348,10 @@ class GateWayItem
 class SequenceFlowItem
 {
 	//QGraphicsTextItem text;
-	QGraphicsLineItem line;
 	QGraphicsPathItem pathItem;
 	QPainterPath path;
 	String name;
 	QLineF linef
-		QRectF pos;
-	QRectF realPos;
 	QTimer t;
 	QPen p;
 	QBrush b;
@@ -369,6 +374,7 @@ class SequenceFlowItem
 
 		path = createSequenceFlowPath(flowType, x1, y1, x2, y2);
 		pathItem.setPen(p);
+		pathItem.setZValue(-100);
 		pathItem.setPath(path);
 	}
 
@@ -432,6 +438,11 @@ class TaskGroup
 		print "blk: ", block_x, block_y;
 		print "args: ",  t.x, t.y;
 		s.addItem(item.ellip);
+		if (t.name == "End") {
+				inItem = new EventItem(this.x + t.x * block_x + block_x / 2 - EVENT_RADIUS / 2 + 10, this.y + t.y * block_y + block_y / 2 - EVENT_RADIUS / 2 + 10,
+				EVENT_RADIUS - 20, EVENT_RADIUS - 20);
+				s.addItem(inItem.ellip);
+		}
 		itemMap.set((String)t.id, item);
 		return item;
 	}
@@ -481,7 +492,7 @@ class TaskGroup
 				break;
 			case "Gateway":
 				GateWayItem inTaskItem = itemMap.get((String)t.incoming);
-				x1 = inTaskItem.pos.getX() + GATEWAY_WIDTH / Math.sqrt(2);
+				x1 = inTaskItem.pos.getX();// + GATEWAY_WIDTH / Math.sqrt(2);
 				y1 = inTaskItem.pos.getY() + GATEWAY_WIDTH / Math.sqrt(2);
 				print "[in] Gateway x1,y1 =" + x1,y1;
 			default:
@@ -504,7 +515,7 @@ class TaskGroup
 				break;
 			case "Gateway":
 				GateWayItem outTaskItem = itemMap.get((String)t.outgoing);
-				x2 = outTaskItem.pos.getX() - GATEWAY_WIDTH / Math.sqrt(2);
+				x2 = outTaskItem.pos.getX();// - GATEWAY_WIDTH / Math.sqrt(2);
 				y2 = outTaskItem.pos.getY() + GATEWAY_WIDTH / Math.sqrt(2);
 				print "[out] task type = gataway x2,y2 =", x2, y2;
 			default:
@@ -518,7 +529,6 @@ class TaskGroup
 		}
 
 		SequenceFlowItem item = new SequenceFlowItem(flowType, x1, y1, x2, y2);
-		//s.addItem(item.line);
 		s.addItem(item.pathItem);
 		return item;
 	}

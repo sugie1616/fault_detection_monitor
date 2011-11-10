@@ -27,6 +27,7 @@ class Model {
 		return task;
 	}
 
+	//Task parseLog(Logcache log){
 	Task parseLog(String log){
 		Task task = new Task();
 		int secTime;
