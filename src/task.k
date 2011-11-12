@@ -7,8 +7,10 @@ class Task {
 	int x, y, id, status;
 	String type, name, listName;
 	int incoming, outgoing;
-	String timeStamp, hostName, applicationName, pid, hashNumber;
+	String timeStamp, hostName, logName, pid, hashNumber;
 	String[] map = [];
+	//Task next;
+	Map detail;
 
 	Task(){
 		

@@ -6,7 +6,8 @@
 using konoha.qt4.*;
 using konoha.posix.*;
 
-include "logViewer.k";
+
+include "/Users/tsunade/konoha-et2011/BPMNViewer/src/logViewer.k"
 
 class Viewer
 {
@@ -22,7 +23,7 @@ class Viewer
 		real_x = 2000;
 		real_y = 700;
 		view_x = 2000;
-		view_y = 400;
+		view_y = 600;
 		senario_x = view_x / 3;
 		taskmap = {};
 	}
@@ -41,31 +42,35 @@ class Viewer
 		//c.setRgb(18, 31, 21, 255);
 		//scene.setBackgroundBrush(b);
 
-		QLinearGradient grad = new QLinearGradient();
-		start = new QPointF();
-		start.setX(0);
-		start.setY(0);
-		end = new QPointF();
-		end.setX(0);
-		end.setY(real_y);
-		grad.setStart(start);
-		grad.setFinalStop(end);
-		print grad.getStart();
-		print grad.getFinalStop();
-		c1 = new QColor();
-		c1.setRgb(12, 114, 135, 195);
-		grad.setColorAt(1.0, c1);
+		//QLinearGradient grad = new QLinearGradient();
+		//start = new QPointF();
+		//start.setX(0);
+		//start.setY(0);
+		//end = new QPointF();
+		//end.setX(0);
+		//end.setY(real_y);
+		//grad.setStart(start);
+		//grad.setFinalStop(end);
+		//print grad.getStart();
+		//print grad.getFinalStop();
+		//c1 = new QColor();
+		//c1.setRgb(12, 114, 135, 195);
+		//grad.setColorAt(1.0, c1);
 		c2 = new QColor();
-		c2.setRgb(0, 0, 0, 255);
-		grad.setColorAt(0.4, c2);
-		grad.setSpread(QGradient.PadSpread);
-		scene.setBackgroundGradientBrush(grad);
+		c2.setRgb(100, 0, 0, 255);
+		//grad.setColorAt(0.4, c2);
+		//grad.setSpread(QGradient.PadSpread);
+		QBrush b = new QBrush();
+		b.setColor(c2);
+		scene.setBackgroundBrush(b);
+		//scene.setBackgroundGradientBrush(grad);
 	}
 
 	void end() {
 		view = new QGraphicsView();
 		view.setScene(scene);
 		view.setWindowOpacity(0.9);
+		//view.setFullScreen();
 		view.show();
 	}
 
@@ -110,9 +115,14 @@ class Viewer
 			}
 		}
 		foreach (f in flowlist.list) {
-			grp.addSequenceFlowItem(scene, list, f);
+			print f;
+			if (f != null) {
+				grp.addSequenceFlowItem(scene, list, f);
+			}
 		}
+		print taskmap.keys();
 	}
+
 	void flash(Task task) {
 		if (taskmap.getSize() == 0) {
 			return;
@@ -123,9 +133,9 @@ class Viewer
 				item.working = true;
 				item.circuitSpin = true;
 				item.switchSpinCircuitEvent();
-				if (task.status == TASK_WORKING){
-					item.displayStatus("Working");
-				}
+				//if (task.status == TASK_WORKING){
+				//	item.displayStatus("Working");
+				//}
 			}
 			else {
 				item.error = true;

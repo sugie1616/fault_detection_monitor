@@ -7,7 +7,7 @@ SequenceFlow 2-5
 SequenceFlow 3-6
 Task new_program_fault 1 0 id:4
 Task incidental_fault_and_memory_leak 1 1 id:5
-Task configulation_miss 1 2 id:6
+Task restart_web 1 2 id:6
 SequenceFlow 4-7
 SequenceFlow 5-8
 SequenceFlow 6-9

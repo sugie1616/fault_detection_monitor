@@ -1,24 +1,36 @@
-Setting 4 5
-Event Start 0 2 id:1
+Setting 4 8
+Event Start 0 3 id:1
 SequenceFlow 1-2
-Gateway XOR 1 2 id:2
+Gateway XOR 1 3 id:2
 SequenceFlow 2-3
 SequenceFlow 2-4
 SequenceFlow 2-5
 SequenceFlow 2-6
 SequenceFlow 2-7
-Task monitor_network_bw 2 0 id:3
-Task monitor_response_time 2 1 id:4
-Task web_access 2 2 id:5
-Task monitor_load_of_system 2 3 id:6
-Task user_report 2 4 id:7
-SequenceFlow 3-8
-SequenceFlow 4-9
-SequenceFlow 5-10
-SequenceFlow 6-11
-SequenceFlow 7-12
-Event End 3 0 id:8
-Event End 3 1 id:9
-Event End 3 2 id:10
-Event End 3 3 id:11
-Event End 3 4 id:12
+SequenceFlow 2-8
+SequenceFlow 2-9
+SequenceFlow 2-10
+Task d-task_monitor_web_access 2 0 id:3
+Task d-task_monitor_web_performance 2 1 id:4
+Task d-task_monitor_oom_killer 2 2 id:5
+Task d-task_monitor_cpu_usage_web 2 3 id:6
+Task d-task_monitor_cpu_usage_db 2 4 id:7
+Task d-task_monitor_mem_usage_web 2 5 id:8
+Task d-task_monitor_mem_usage_db 2 6 id:9
+Task d-task_monitor_net_usage 2 7 id:10
+SequenceFlow 3-12
+SequenceFlow 4-13
+SequenceFlow 5-14
+SequenceFlow 6-15
+SequenceFlow 7-16
+SequenceFlow 8-17
+SequenceFlow 9-18
+SequenceFlow 10-19
+Event End 3 0 id:12
+Event End 3 1 id:13
+Event End 3 2 id:14
+Event End 3 3 id:15
+Event End 3 4 id:16
+Event End 3 5 id:17
+Event End 3 6 id:18
+Event End 3 7 id:19

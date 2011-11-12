@@ -1,20 +1,28 @@
-Setting 6 3
+Setting 4 4
 Event Start 0 1 id:1
 SequenceFlow 1-2
 Gateway AND 1 1 id:2
 SequenceFlow 2-3
 SequenceFlow 2-4
 SequenceFlow 2-5
+SequenceFlow 2-6
 Task check_appache_log 2 0 id:3
-Task check_db_log 2 1 id:4
-Task watch_system_log 2 2 id:5
-SequenceFlow 3-6
-SequenceFlow 4-6
-SequenceFlow 5-6
-Gateway AND1 3 1 id:6
-SequenceFlow 6-7
-Task confirm_corralation 4 1 id:7
-SequenceFlow 7-8
-Task decide_way_of_recovery 5 1 id:8
-SequenceFlow 8-9
-Event End 6 1 id:9
+Task check_lang_log 2 1 id:4
+Task watch_monitor 2 2 id:5
+Task watch_kernel_log 2 3 id:6
+SequenceFlow 3-7
+SequenceFlow 4-8
+SequenceFlow 5-9
+SequenceFlow 6-10
+Task concentrated_URL 3 0 id:7
+Task is_failed 3 1 id:8
+Task increase_stress 3 2 id:9
+Task invoke_OOM_killer 3 3 id:10
+SequenceFlow 7-11
+SequenceFlow 8-12
+SequenceFlow 9-13
+SequenceFlow 10-14
+Event End 4 0 id:11
+Event End 4 1 id:12
+Event End 4 2 id:13
+Event End 4 3 id:14

@@ -1,4 +1,6 @@
-include "task.k"
+
+
+include "/Users/tsunade/konoha-et2011/BPMNViewer/src/task.k"
 //using konoha.posix.*;
 
 class Model {
@@ -27,50 +29,103 @@ class Model {
 		return task;
 	}
 
-	//Task parseLog(Logcache log){
-	Task parseLog(String log){
-		Task task = new Task();
-		int secTime;
-		String[] map, otherMap, appMap;
-		map = log.split($/ +/);
-		task.timestamp = map[0] + map[1] + map[2];
-		secTime = (int)map[2].split($/:/)[0] * 3600 + (int)map[2].split($/:/)[1] * 60 + (int)map[2].split($/:/)[2];
-		task.hostName = map[3];
-		task.pid = map[4];
-		task.hashNumber = map[5];
-		task.applicationName = map[6];
-		otherMap = map[7].split("\"");
-		appMap = task.applicationName.split($/_/);
-		int size;
-		if ( appMap[0] == "actor:new"){
-			task.listName = otherMap[3].split($/_/)[1];
-			size = otherMap[3].split($/_/).getSize();
-			for (int i = 2; i < size; i ++) {
-				if (i != size - 1) {
-					task.name = task.name + otherMap[3].split($/_/)[i] + "_";
-				}
-				else if (i == size - 1){
-					task.name = task.name + otherMap[3].split($/_/)[i];
-				}
-			}
-			task.status = TASK_WORKING;
+	Task parseLog(Log log){
+		if (log == null) {
+			return null;
 		}
-		else if ( appMap[0] == "d-task" || appMap[0] == "d-script") {
-			task.listName = appMap[1];
-			size = appMap.getSize();
-			for (int i = 2; i < size; i ++) {
-				if (i != size - 1) {
-					task.name = task.name + appMap[i] + "_";
-				}
-				else if (i == size - 1){
-					task.name = task.name + appMap[i];
-				}
+		Task task = new Task();
+		//int secTime;
+		String[] map, otherMap, appMap;
+		task.timestamp = log.time;
+		//secTime = (int)map[2].split($/:/)[0] * 3600 + (int)map[2].split($/:/)[1] * 60 + (int)map[2].split($/:/)[2];
+		task.hostName = log.host;
+		task.pid = (String)log.pid;
+		task.hashNumber = log.trace;
+		task.logName = log.name;
+		appMap = task.logName.split("_");
+		print "NAME: ", log.name
+		/* memcache */ 
+		if (task.logName == "actor:startTask"){
+			if (log.val == null) {
+				task.status = TASK_STOP;
 			}
-			task.status = TASK_WORKING;
+			else {
+				print "-------------------------------------------"
+				print task.logName;
+				//task.role = t["role"];
+				task.name = log.val["name"];
+				task.detail = log.val;
+				task.status = TASK_WORKING;
+			}
+		}
+		else if (task.logName.startswith("d-task") || task.logName.startswith("d-script")) {
+			if (log.val == null) {
+				task.status = TASK_STOP;
+			}
+			else {
+				foreach (String key in log.val.keys()) {
+					if (key.startswith("isError")) {
+						if (log.val[key] == 1) {
+							task.status = TASK_ERROR;
+							return;
+						}
+					}
+				}
+				print "-------------------------------------------"
+				print task.logName;
+				task.name = task.logName;
+				task.detail = log.val;
+				task.status = TASK_WORKING;
+			}
 		}
 		print task;
 		return task;
 	}
+
+	//Task parseLog(Logcache log){
+	//Task parseLog(String log){
+	//	Task task = new Task();
+	//	int secTime;
+	//	String[] map, otherMap, appMap;
+	//	map = log.split($/ +/);
+	//	task.timestamp = map[0] + map[1] + map[2];
+	//	secTime = (int)map[2].split($/:/)[0] * 3600 + (int)map[2].split($/:/)[1] * 60 + (int)map[2].split($/:/)[2];
+	//	task.hostName = map[3];
+	//	task.pid = map[4];
+	//	task.hashNumber = map[5];
+	//	task.applicationName = map[6];
+	//	otherMap = map[7].split("\"");
+	//	appMap = task.applicationName.split($/_/);
+	//	int size;
+	//	if ( appMap[0] == "actor:new"){
+	//		task.listName = otherMap[3].split($/_/)[1];
+	//		size = otherMap[3].split($/_/).getSize();
+	//		for (int i = 2; i < size; i ++) {
+	//			if (i != size - 1) {
+	//				task.name = task.name + otherMap[3].split($/_/)[i] + "_";
+	//			}
+	//			else if (i == size - 1){
+	//				task.name = task.name + otherMap[3].split($/_/)[i];
+	//			}
+	//		}
+	//		task.status = TASK_WORKING;
+	//	}
+	//	else if ( appMap[0] == "d-task" || appMap[0] == "d-script") {
+	//		task.listName = appMap[1];
+	//		size = appMap.getSize();
+	//		for (int i = 2; i < size; i ++) {
+	//			if (i != size - 1) {
+	//				task.name = task.name + appMap[i] + "_";
+	//			}
+	//			else if (i == size - 1){
+	//				task.name = task.name + appMap[i];
+	//			}
+	//		}
+	//		task.status = TASK_WORKING;
+	//	}
+	//	print task;
+	//	return task;
+	//}
 
 	TaskList getTaskList(String filename){
 		TaskList taskList = new TaskList();

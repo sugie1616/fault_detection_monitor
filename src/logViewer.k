@@ -20,6 +20,7 @@ class EventItem
 	boolean lightUp;
 	boolean working;
 	boolean error;
+	QTimer t;
 	EventItem(float x, float y, float w, float h) {
 		ellip = new QGraphicsEllipseItem();
 		text = new QGraphicsTextItem();
@@ -41,7 +42,8 @@ class EventItem
 		p.setWidth(3);
 		ellip.setPen(p);
 
-		ellip.addEvent("mouse-press-event", delegate(this, mEvent));
+		//ellip.addEvent("mouse-press-event", delegate(this, mEvent));
+		t.addEvent("timer-event", delegate(this, tEvent));
 		working = false;
 		lightUp = false;
 		error = false;
@@ -50,6 +52,26 @@ class EventItem
 	void mEvent(QGraphicsMouseEvent event) {
 		print "hi";
 	}
+
+	void tEvent() {
+		if (this.error) {
+			if (this.lightUp) {
+				this.lightUp = false;
+				c.setRgb(255, 0, 0, 100);
+				b.setColor(c);
+				ellip.setBrush(b);
+				inEllip.setBrush(b);
+			}
+			else {
+				this.lightUp = true;
+				c.setRgb(255, 0, 0, 240);
+				b.setColor(c);
+				ellip.setBrush(b);
+				inEllip.setBrush(b);
+			}
+		}
+	}
+
 
 	QGraphicsLineItem jointFromEnd(QRectF r) {
 		QLineF line = new QLineF();
@@ -78,6 +100,7 @@ class TaskItem
 	boolean working;
 	boolean error;
 	QTimer t;
+	TaskItem[] next;
 
 	QGraphicsRectItem rectItem;
 	QPointF rectPoint;
@@ -109,12 +132,12 @@ class TaskItem
 	TaskItem(String n, float x, float y, float w, float h) {
 		rectItem = createRectItem(x, y, w, h);
 		textItem = createTextItem(n, x, y, w, h);
-		statusText = createStatusTextItem(x, y);
+		//statusText = createStatusTextItem(x, y);
 		circuitPathItem = createCircuitPathItem(x, y);
 
 		t = new Timer(null);
 		t.addEvent("timer-event", delegate(this, tEvent));
-		t.start(3);
+		t.start(300);
 		working = false;
 		lightUp = false;
 		error = false;
@@ -129,7 +152,7 @@ class TaskItem
 		rectPos.setRect(x, y, w, h);
 		rectItem.setRect(rectPos);
 		rectBrush.setStyle(1);
-		rectColor.setRgb(255, 255, 255, 100);
+		rectColor.setRgb(0, 0, 0, 255);
 		rectBrush.setColor(rectColor);
 		rectItem.setBrush(rectBrush);
 		rectColor.setRgb(40, 40, 40, 255);
@@ -150,12 +173,16 @@ class TaskItem
 		textFont = new QFont();
 
 		textBrush.setStyle(1);
+		//textColor.setRgb(0, 0, 0, 150);
 		textColor.setRgb(255, 255, 0, 150);
 		textBrush.setColor(textColor);
 		textFont.setFamily("Phetsarath");
-		textFont.setPixelSize(20);
-		textFont.setItalic(true);
-		taskName = getAdjustedText(n, textFont, w);
+		textFont.setPixelSize(16);
+		//taskName = getAdjustedText(n, textFont, w);
+		if (n.startswith("d-task")) {
+			n = n["d-task_monitor_".size to -1];
+		}
+		taskName = n.replace("_", " ");
 		textPoint.setX(getAdjustedX(taskName, textFont, x, w));
 		textPoint.setY(getAdjustedY(taskName, textFont, y, h));
 		textItem.setText(taskName);
@@ -174,13 +201,14 @@ class TaskItem
 		statusFont = new QFont();
 
 		statusBrush.setStyle(1);
-		statusColor.setRgb(255, 255, 0, 150);
+		statusColor.setRgb(40, 40, 40, 150);
+		//statusColor.setRgb(255, 255, 0, 150);
 		statusBrush.setColor(statusColor);
 		statusPoint.setX(x);
 		statusPoint.setY(y - 27);
 		statusFont.setFamily("Phetsarath");
 		statusFont.setPixelSize(20);
-		statusFont.setItalic(true);
+		//statusFont.setItalic(true);
 		statusText.setBrush(statusBrush);
 		statusText.setPos(statusPoint);
 		statusText.setFont(statusFont);
@@ -382,7 +410,6 @@ class TaskItem
 					j = 1;
 				}
 				i = i + j;
-				//print i;
 				rectColor.setRgb(80, 200 - i / 2, 80, 255);
 				rectBrush.setColor(rectColor);
 				rectItem.setBrush(rectBrush);
@@ -390,6 +417,10 @@ class TaskItem
 			}
 			else {
 				this.lightUp = true;
+				rectColor.setRgb(40, 40, 40, 255);
+				rectBrush.setColor(rectColor);
+				rectItem.setBrush(rectBrush);
+
 			}
 		}
 		else if (this.error) {
@@ -649,7 +680,7 @@ class TaskGroup
 		return item;
 	}
 	TaskItem addTaskItem(QGraphicsScene s, Task t) {
-		item = new TaskItem(name, this.x + t.x * block_x + block_x / 2 - TASK_WIDTH / 2,
+		item = new TaskItem(t.name, this.x + t.x * block_x + block_x / 2 - TASK_WIDTH / 2,
 				this.y + t.y * block_y + block_y / 2 - TASK_HEIGHT / 2, TASK_WIDTH, TASK_HEIGHT);
 	//	print "this: ", this.x, this.y;
 	//	print "args: ", t.x, t.y;
@@ -658,7 +689,7 @@ class TaskGroup
 		s.addItem(item.rectItem);
 		s.addItem(item.textItem);
 		s.addItem(item.circuitPathItem);
-		s.addItem(item.statusText);
+		//s.addItem(item.statusText);
 		itemMap.set((String)t.id, item);
 		return item;
 	}
@@ -681,6 +712,7 @@ class TaskGroup
 		outTask = list.findFromID(t.outgoing);
 		switch (inTask.type) {
 			case "Event":
+				//print t.incoming
 				EventItem inTaskItem = itemMap.get((String)t.incoming);
 				x1 = inTaskItem.pos.getX() + EVENT_RADIUS;
 				y1 = inTaskItem.pos.getY() + EVENT_RADIUS / 2;
@@ -688,8 +720,11 @@ class TaskGroup
 				break;
 			case "Task":
 				TaskItem inTaskItem = itemMap.get((String)t.incoming);
+				/* BUGS maybe task t is null*/
+				//print inTask.name
 				x1 = inTaskItem.rectPos.getX() + TASK_WIDTH;
 				y1 = inTaskItem.rectPos.getY() + TASK_WIDTH / 4;
+				/* BUGS */
 				//print "[in] ", inTask.name, " x,y =", inTaskItem.rectPos.getX(),inTaskItem.rectPos.getY();
 				//print "[in] ", inTask.name, " x1,y1 =", x1,y1;
 				break;
@@ -706,6 +741,7 @@ class TaskGroup
 				EventItem outTaskItem = itemMap.get((String)t.outgoing);
 				x2 = outTaskItem.pos.getX();
 				y2 = outTaskItem.pos.getY() + EVENT_RADIUS / 2;
+				//inTask.next.add(outTaskItem);
 				//print "[out] task type = Event x2,y2 =", x2, y2;
 				break;
 			case "Task":
